@@ -9,6 +9,7 @@ const config = {
   dialect: 'mysql',
   timezone: '+07:00',
   logging: false,
+  dialectOptions: { decimalNumbers: true }, // DECIMAL dikembalikan sebagai angka, bukan string
 };
 
 module.exports = {
