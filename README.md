@@ -2,77 +2,59 @@
 
 **SubTrack: Aplikasi Pencatat Langganan Digital dan Pengelola Patungan Berbasis Android Menggunakan Jetpack Compose**
 
-SubTrack adalah aplikasi Android untuk mencatat dan memantau langganan digital serta iuran patungan langganan. Seluruh data dicatat manual oleh pengguna; aplikasi tidak memproses transaksi atau pembayaran apa pun.
+Project Akhir Pengembangan Aplikasi Mobile (PAM) 2026 (individu).
 
-**Pasya Achmadinedja Maulana – 20240140035 – Kelas B**
-Project Akhir Pengembangan Aplikasi Mobile 2026
-
-## Teknologi
-
-| Bagian | Teknologi |
+| | |
 |---|---|
-| Android | Kotlin, Jetpack Compose (Material 3), MVVM, Navigation Compose, Retrofit + OkHttp, DataStore, Coil |
-| Backend | Node.js + Express, Sequelize (ORM) + sequelize-cli, Zod, JWT (Access & Refresh Token), bcrypt |
-| Database | MySQL 8 |
+| Nama | Pasya Achmadinedja Maulana |
+| NIM | 20240140035 |
+| Kelas | B |
+| Repository API | https://github.com/PasyaMaulana/0035_API_SubTrack |
 
-## Struktur Repository
+## 1. Teknologi
 
-```
-0035_SubTrack/
-├── android/              # Project Android (Jetpack Compose)
-├── backend/              # REST API Node.js + Express
-│   ├── database/
-│   │   ├── migrations/   # Migration Sequelize (skema tabel)
-│   │   └── seeders/      # Seeder Sequelize (data awal)
-│   └── src/              # Kode backend (config, models, routes, dll.)
-└── README.md
-```
+| Kebutuhan | Teknologi |
+|---|---|
+| Bahasa dan UI | Kotlin, Jetpack Compose (Material 3) |
+| Arsitektur | MVVM (ViewModel dan StateFlow) |
+| Navigasi | Navigation Compose |
+| Koneksi API | Retrofit dan OkHttp |
+| Penyimpanan token | DataStore |
+| Gambar | Coil |
+| Minimum SDK | API 26 |
 
-## Status Fitur
+## 2. Cara Menjalankan
+
+1. Clone repository ini, lalu buka foldernya di Android Studio (**Open**).
+2. Tunggu Gradle sync selesai.
+3. Jalankan backend dari repository API (lihat README repository tersebut).
+4. Jalankan aplikasi di emulator atau perangkat.
+
+## 3. Status Fitur
 
 | Fitur | Status |
 |---|---|
-| Autentikasi JWT (register, login, refresh token, logout) | ⏳ Belum |
-| Hak akses berbasis role (Admin & User) | ⏳ Belum |
-| CRUDS Katalog Layanan | ⏳ Belum |
-| CRUDS Langganan | ⏳ Belum |
-| CRUDS Catatan Pembayaran | ⏳ Belum |
-| CRUDS Grup Patungan | ⏳ Belum |
-| CRUDS Anggota dan Iuran | ⏳ Belum |
-| Foto bukti pembayaran (penyimpanan lokal) | ⏳ Belum |
-| Dashboard ringkasan | ⏳ Belum |
-| Ekspor laporan CSV (penyimpanan lokal) | ⏳ Belum |
+| Autentikasi dan navigasi per role | ⏳ Belum |
+| Katalog Layanan | ⏳ Belum |
+| Langganan | ⏳ Belum |
+| Catatan Pembayaran | ⏳ Belum |
+| Grup Patungan | ⏳ Belum |
+| Anggota dan Iuran | ⏳ Belum |
+| Dashboard | ⏳ Belum |
+| Foto bukti dan ekspor laporan | ⏳ Belum |
 
-Keterangan: ✅ Selesai · 🔄 Dikerjakan · ⏳ Belum
+## 4. Progress Mingguan (Weekly Progress)
 
-## Cara Menjalankan
+Berikut linimasa pengembangan yang disusun dari riwayat git commit:
 
-### Backend
-1. Pastikan MySQL 8 sudah berjalan.
-2. Masuk ke folder backend lalu install dependency:
-   ```bash
-   cd backend
-   npm install
-   ```
-3. Salin `.env.example` menjadi `.env`, lalu isi `DB_PASSWORD` sesuai MySQL.
-4. Buat database, tabel, dan data awal:
-   ```bash
-   npx sequelize-cli db:create --charset utf8mb4 --collate utf8mb4_unicode_ci
-   npx sequelize-cli db:migrate
-   npx sequelize-cli db:seed:all
-   ```
-5. Jalankan server:
-   ```bash
-   npm run dev
-   ```
-   Cek koneksi di `http://localhost:3000/api/v1/health`.
+### 📅 Minggu 1 (12 November 2026)
 
-### Akun Demo
+- **Inisialisasi Repository dan Project** (`cac1c5f`, `3823cf0`, `5589d3e`): struktur folder, project Android Jetpack Compose, serta README awal dengan tabel status fitur. Dikerjakan pada 22 November 2026 (commit minggu 1 terlambat dengan izin dosen).
 
-| Role | Email | Password |
-|---|---|---|
-| Admin | admin@subtrack.id | Admin123 |
-| User | user@subtrack.id | User1234 |
+### 📅 Minggu 2 (19 - 25 November 2026)
 
-### Aplikasi Android
-Panduan akan ditambahkan setelah aplikasi Android terhubung ke backend.
+- **Pengembangan Backend (awalnya satu repository)** (`c50240b`, `6af606e`, `4a4082d`, `dc6f9de`, `d913844`, `062a949`, `b662d35`, `8b7c068`, `c926ce1`): skema database 6 tabel, setup Express dan Sequelize, migration, model, seeder, dan panduan menjalankan backend. Bagian ini kemudian dipindahkan ke repository API.
+
+### 📅 Minggu 3 (26 November 2026)
+
+- **Pemisahan Repository** (`997bd05`): backend dipindahkan ke repository API, dan project Android dipindahkan ke root repository ini.
