@@ -28,6 +28,9 @@ interface ContainerApp {
     val groupApi: GroupApi
     val memberApi: MemberApi
     val dashboardApi: DashboardApi
+
+    // Repository fitur
+    val authRepository: AuthRepository
 }
 
 class ContainerDataApp(context: Context) : ContainerApp {
@@ -83,6 +86,10 @@ class ContainerDataApp(context: Context) : ContainerApp {
     override val groupApi: GroupApi by lazy { retrofit.create<GroupApi>() }
     override val memberApi: MemberApi by lazy { retrofit.create<MemberApi>() }
     override val dashboardApi: DashboardApi by lazy { retrofit.create<DashboardApi>() }
+
+    override val authRepository: AuthRepository by lazy {
+        NetworkAuthRepository(authApi, sessionManager, json)
+    }
 
     private companion object {
         const val TIMEOUT_DETIK = 30L

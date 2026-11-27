@@ -157,7 +157,10 @@
     <string name="error_tidak_ditemukan">Data tidak ditemukan</string>
     <string name="error_wajib_diisi">Wajib diisi</string>
     <string name="error_email_tidak_valid">Format email tidak valid</string>
+    <string name="error_nama_pendek">Nama minimal 3 karakter</string>
+    <string name="error_nama_panjang">Nama maksimal 50 karakter</string>
     <string name="error_password_pendek">Password minimal 8 karakter</string>
+    <string name="error_password_huruf_angka">Password harus mengandung huruf dan angka</string>
     <string name="error_password_tidak_sama">Konfirmasi password tidak sama</string>
     <string name="error_angka_tidak_valid">Masukkan angka yang valid</string>
     <string name="error_harus_lebih_dari_nol">Nilai harus lebih dari 0</string>
