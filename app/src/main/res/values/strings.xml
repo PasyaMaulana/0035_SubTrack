@@ -146,6 +146,7 @@
     <!-- Pesan loading, error, dan kosong -->
     <string name="msg_memuat">Memuat data…</string>
     <string name="msg_menyimpan">Menyimpan…</string>
+    <string name="msg_segera_hadir">Halaman %1$s sedang disiapkan</string>
     <string name="msg_berhasil_disimpan">Data berhasil disimpan</string>
     <string name="msg_berhasil_dihapus">Data berhasil dihapus</string>
     <string name="msg_berhasil_keluar">Berhasil keluar</string>

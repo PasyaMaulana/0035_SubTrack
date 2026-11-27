@@ -9,13 +9,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
-import com.example.subtrack.view.auth.LoginScreen
-import com.example.subtrack.view.auth.RegisterScreen
+import com.example.subtrack.view.navigation.SubTrackNavGraph
 import com.example.subtrack.view.theme.SubTrackTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,19 +29,7 @@ class MainActivity : ComponentActivity() {
         periksaIzinJaringanLokal()
         setContent {
             SubTrackTheme {
-                // Sementara: pindah login <-> register tanpa NavGraph (navigasi lengkap di langkah 7)
-                var tampilRegister by rememberSaveable { mutableStateOf(false) }
-                if (tampilRegister) {
-                    RegisterScreen(
-                        onRegisterBerhasil = {},
-                        onKeLogin = { tampilRegister = false }
-                    )
-                } else {
-                    LoginScreen(
-                        onLoginBerhasil = {},
-                        onKeRegister = { tampilRegister = true }
-                    )
-                }
+                SubTrackNavGraph()
             }
         }
     }
