@@ -1,3 +1,212 @@
 <resources>
+    <!-- Umum -->
     <string name="app_name">SubTrack</string>
+    <string name="app_tagline">Catat langganan digital dan kelola patungan</string>
+    <string name="format_rupiah">Rp%1$s</string>
+    <string name="format_per_bulan">%1$s / bulan</string>
+    <string name="format_tanggal_jatuh_tempo">Jatuh tempo %1$s</string>
+    <string name="format_tanggal_tiap_bulan">Tanggal %1$d tiap bulan</string>
+    <string name="format_jumlah_anggota">%1$d / %2$d anggota</string>
+    <string name="format_sudah_bayar">%1$d dari %2$d sudah bayar</string>
+    <string name="format_hari_lagi">%1$d hari lagi</string>
+    <string name="format_total_data">Total: %1$d</string>
+    <string name="format_halo">Halo, %1$s</string>
+
+    <!-- Login dan register -->
+    <string name="login_title">Masuk</string>
+    <string name="login_subtitle">Masuk untuk melihat langganan dan patunganmu</string>
+    <string name="login_button">Masuk</string>
+    <string name="login_belum_punya_akun">Belum punya akun? Daftar</string>
+    <string name="register_title">Daftar Akun</string>
+    <string name="register_subtitle">Buat akun baru untuk mulai mencatat</string>
+    <string name="register_button">Daftar</string>
+    <string name="register_sudah_punya_akun">Sudah punya akun? Masuk</string>
+    <string name="label_nama">Nama</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_konfirmasi_password">Konfirmasi Password</string>
+    <string name="cd_tampilkan_password">Tampilkan password</string>
+    <string name="cd_sembunyikan_password">Sembunyikan password</string>
+    <string name="cd_logo">Logo SubTrack</string>
+    <string name="izin_jaringan_lokal">Izin jaringan lokal dibutuhkan untuk terhubung ke server</string>
+
+    <!-- Menu navigasi dan judul layar -->
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_katalog">Katalog</string>
+    <string name="menu_langganan">Langganan</string>
+    <string name="menu_grup">Patungan</string>
+    <string name="menu_profil">Profil</string>
+    <string name="title_detail_layanan">Detail Layanan</string>
+    <string name="title_tambah_layanan">Tambah Layanan</string>
+    <string name="title_edit_layanan">Edit Layanan</string>
+    <string name="title_detail_langganan">Detail Langganan</string>
+    <string name="title_tambah_langganan">Tambah Langganan</string>
+    <string name="title_edit_langganan">Edit Langganan</string>
+    <string name="title_pembayaran">Riwayat Pembayaran</string>
+    <string name="title_tambah_pembayaran">Tambah Pembayaran</string>
+    <string name="title_edit_pembayaran">Edit Pembayaran</string>
+    <string name="title_detail_grup">Detail Patungan</string>
+    <string name="title_tambah_grup">Buat Grup Patungan</string>
+    <string name="title_edit_grup">Edit Grup Patungan</string>
+    <string name="title_anggota">Anggota</string>
+    <string name="title_tambah_anggota">Tambah Anggota</string>
+    <string name="title_edit_anggota">Edit Anggota</string>
+
+    <!-- Label form: layanan (admin) -->
+    <string name="label_nama_layanan">Nama Layanan</string>
+    <string name="label_kategori">Kategori</string>
+    <string name="label_deskripsi">Deskripsi</string>
+    <string name="label_website">Website</string>
+    <string name="label_aktif">Aktif</string>
+
+    <!-- Label form: langganan -->
+    <string name="label_layanan">Layanan</string>
+    <string name="label_nama_paket">Nama Paket</string>
+    <string name="label_harga">Harga</string>
+    <string name="label_siklus">Siklus Tagihan</string>
+    <string name="label_tanggal_mulai">Tanggal Mulai</string>
+    <string name="label_tagihan_berikutnya">Tagihan Berikutnya</string>
+    <string name="label_metode_pembayaran">Metode Pembayaran</string>
+    <string name="label_status">Status</string>
+    <string name="label_catatan">Catatan</string>
+    <string name="hint_tagihan_berikutnya">Kosongkan agar dihitung otomatis</string>
+
+    <!-- Label form: pembayaran -->
+    <string name="label_jumlah">Jumlah</string>
+    <string name="label_tanggal_bayar">Tanggal Bayar</string>
+    <string name="label_metode">Metode</string>
+    <string name="label_bukti">Bukti Pembayaran</string>
+    <string name="label_total_dibayar">Total Dibayar</string>
+    <string name="cd_bukti_pembayaran">Foto bukti pembayaran</string>
+
+    <!-- Label form: grup patungan -->
+    <string name="label_nama_grup">Nama Grup</string>
+    <string name="label_langganan_terkait">Langganan Terkait (opsional)</string>
+    <string name="label_tanpa_langganan">Tanpa langganan</string>
+    <string name="label_total_biaya">Total Biaya</string>
+    <string name="label_tanggal_jatuh_tempo">Tanggal Jatuh Tempo (1-28)</string>
+    <string name="label_maks_anggota">Maksimal Anggota (2-20)</string>
+    <string name="label_iuran_disarankan">Iuran Disarankan</string>
+    <string name="label_terkumpul">Terkumpul</string>
+    <string name="label_sisa">Sisa</string>
+
+    <!-- Label form: anggota -->
+    <string name="label_nama_anggota">Nama Anggota</string>
+    <string name="label_kontak">Kontak</string>
+    <string name="label_iuran">Iuran</string>
+    <string name="hint_iuran">Kosongkan agar dibagi rata</string>
+    <string name="label_status_iuran">Status Iuran</string>
+
+    <!-- Dashboard dan profil -->
+    <string name="label_total_langganan">Total Langganan</string>
+    <string name="label_estimasi_bulanan">Estimasi Bulanan</string>
+    <string name="label_dibayar_bulan_ini">Dibayar Bulan Ini</string>
+    <string name="label_per_kategori">Pengeluaran per Kategori</string>
+    <string name="label_tagihan_terdekat">Tagihan Terdekat</string>
+    <string name="label_grup_patungan">Grup Patungan</string>
+    <string name="label_anggota_belum_bayar">Anggota Belum Bayar</string>
+    <string name="label_iuran_tertunggak">Iuran Tertunggak</string>
+    <string name="label_total_pengguna">Total Pengguna</string>
+    <string name="label_total_layanan">Total Layanan</string>
+    <string name="label_layanan_aktif">Layanan Aktif</string>
+    <string name="label_total_grup">Total Grup</string>
+    <string name="label_layanan_populer">Layanan Populer</string>
+    <string name="label_role">Peran</string>
+
+    <!-- Tombol umum -->
+    <string name="btn_simpan">Simpan</string>
+    <string name="btn_batal">Batal</string>
+    <string name="btn_hapus">Hapus</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_tambah">Tambah</string>
+    <string name="btn_coba_lagi">Coba Lagi</string>
+    <string name="btn_kembali">Kembali</string>
+    <string name="btn_keluar">Keluar</string>
+    <string name="btn_ya">Ya</string>
+    <string name="btn_tidak">Tidak</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_pilih_foto">Pilih Foto</string>
+    <string name="btn_ganti_foto">Ganti Foto</string>
+    <string name="btn_hapus_foto">Hapus Foto</string>
+    <string name="btn_pilih_tanggal">Pilih Tanggal</string>
+    <string name="btn_ekspor_csv">Ekspor CSV</string>
+    <string name="btn_bagikan">Bagikan</string>
+    <string name="btn_semua">Semua</string>
+    <string name="hint_cari">Cari…</string>
+    <string name="cd_kembali">Kembali</string>
+    <string name="cd_tambah">Tambah data</string>
+    <string name="cd_edit">Edit data</string>
+    <string name="cd_hapus">Hapus data</string>
+    <string name="cd_cari">Cari</string>
+    <string name="cd_hapus_pencarian">Hapus pencarian</string>
+    <string name="cd_filter">Filter</string>
+    <string name="cd_ekspor">Ekspor laporan</string>
+    <string name="cd_keluar">Keluar dari akun</string>
+
+    <!-- Pesan loading, error, dan kosong -->
+    <string name="msg_memuat">Memuat data…</string>
+    <string name="msg_menyimpan">Menyimpan…</string>
+    <string name="msg_berhasil_disimpan">Data berhasil disimpan</string>
+    <string name="msg_berhasil_dihapus">Data berhasil dihapus</string>
+    <string name="msg_berhasil_keluar">Berhasil keluar</string>
+    <string name="error_umum">Terjadi kesalahan. Silakan coba lagi.</string>
+    <string name="error_jaringan">Tidak dapat terhubung ke server. Periksa koneksi internet.</string>
+    <string name="error_timeout">Server terlalu lama merespons</string>
+    <string name="error_sesi_habis">Sesi berakhir, silakan masuk kembali</string>
+    <string name="error_tidak_diizinkan">Kamu tidak memiliki akses ke fitur ini</string>
+    <string name="error_tidak_ditemukan">Data tidak ditemukan</string>
+    <string name="error_wajib_diisi">Wajib diisi</string>
+    <string name="error_email_tidak_valid">Format email tidak valid</string>
+    <string name="error_password_pendek">Password minimal 8 karakter</string>
+    <string name="error_password_tidak_sama">Konfirmasi password tidak sama</string>
+    <string name="error_angka_tidak_valid">Masukkan angka yang valid</string>
+    <string name="error_harus_lebih_dari_nol">Nilai harus lebih dari 0</string>
+    <string name="error_jatuh_tempo_rentang">Tanggal harus di antara 1 dan 28</string>
+    <string name="error_maks_anggota_rentang">Jumlah anggota harus di antara 2 dan 20</string>
+    <string name="error_grup_penuh">Grup sudah mencapai batas anggota</string>
+    <string name="error_foto_gagal">Gagal menyimpan foto</string>
+    <string name="error_ekspor_gagal">Gagal membuat laporan</string>
+    <string name="empty_katalog">Belum ada layanan di katalog</string>
+    <string name="empty_langganan">Belum ada langganan. Tambahkan langganan pertamamu.</string>
+    <string name="empty_pembayaran">Belum ada riwayat pembayaran</string>
+    <string name="empty_grup">Belum ada grup patungan</string>
+    <string name="empty_anggota">Belum ada anggota di grup ini</string>
+    <string name="empty_tagihan">Tidak ada tagihan dalam waktu dekat</string>
+    <string name="empty_hasil_cari">Tidak ada hasil yang cocok</string>
+
+    <!-- Konfirmasi hapus dan keluar -->
+    <string name="confirm_hapus_title">Hapus Data?</string>
+    <string name="confirm_hapus_layanan">Layanan \"%1$s\" akan dihapus dari katalog.</string>
+    <string name="confirm_hapus_langganan">Langganan \"%1$s\" beserta riwayat pembayarannya akan dihapus.</string>
+    <string name="confirm_hapus_pembayaran">Catatan pembayaran ini akan dihapus.</string>
+    <string name="confirm_hapus_grup">Grup \"%1$s\" beserta semua anggotanya akan dihapus.</string>
+    <string name="confirm_hapus_anggota">Anggota \"%1$s\" akan dihapus dari grup.</string>
+    <string name="confirm_keluar_title">Keluar?</string>
+    <string name="confirm_keluar_message">Kamu harus masuk kembali untuk memakai aplikasi.</string>
+
+    <!-- Enum: kategori layanan -->
+    <string name="kategori_streaming_video">Streaming Video</string>
+    <string name="kategori_musik">Musik</string>
+    <string name="kategori_cloud_storage">Cloud Storage</string>
+    <string name="kategori_produktivitas">Produktivitas</string>
+    <string name="kategori_gaming">Gaming</string>
+    <string name="kategori_lainnya">Lainnya</string>
+
+    <!-- Enum: siklus tagihan -->
+    <string name="siklus_bulanan">Bulanan</string>
+    <string name="siklus_triwulan">Triwulan</string>
+    <string name="siklus_tahunan">Tahunan</string>
+
+    <!-- Enum: status langganan -->
+    <string name="status_active">Aktif</string>
+    <string name="status_paused">Dijeda</string>
+    <string name="status_cancelled">Dibatalkan</string>
+
+    <!-- Enum: status iuran anggota -->
+    <string name="iuran_lunas">Lunas</string>
+    <string name="iuran_belum_lunas">Belum Lunas</string>
+
+    <!-- Enum: peran pengguna -->
+    <string name="role_admin">Admin</string>
+    <string name="role_user">Pengguna</string>
 </resources>

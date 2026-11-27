@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Versi mode gelap dari warna status, otomatis dipilih Android saat tema gelap -->
+
+    <!-- Status iuran anggota -->
+    <color name="status_lunas">#FF8FD9A4</color>
+    <color name="status_lunas_container">#FF0F4D24</color>
+    <color name="status_belum_lunas">#FFFFB4AB</color>
+    <color name="status_belum_lunas_container">#FF7A1A14</color>
+
+    <!-- Status langganan -->
+    <color name="status_aktif">#FF8FD9A4</color>
+    <color name="status_aktif_container">#FF0F4D24</color>
+    <color name="status_dijeda">#FFFFCF70</color>
+    <color name="status_dijeda_container">#FF5C3C00</color>
+    <color name="status_dibatalkan">#FFC4C7CC</color>
+    <color name="status_dibatalkan_container">#FF3C3F43</color>
+</resources>

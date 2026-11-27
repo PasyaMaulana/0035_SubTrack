@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Warna khusus aplikasi, dipakai lewat colorResource(R.color.xxx).
+         "status_x" untuk teks/ikon, "status_x_container" untuk latar chip/badge. -->
+
+    <!-- Status iuran anggota -->
+    <color name="status_lunas">#FF1B7F3B</color>
+    <color name="status_lunas_container">#FFD4F5DC</color>
+    <color name="status_belum_lunas">#FFB3261E</color>
+    <color name="status_belum_lunas_container">#FFFFDAD6</color>
+
+    <!-- Status langganan -->
+    <color name="status_aktif">#FF1B7F3B</color>
+    <color name="status_aktif_container">#FFD4F5DC</color>
+    <color name="status_dijeda">#FF8A5A00</color>
+    <color name="status_dijeda_container">#FFFFE8B8</color>
+    <color name="status_dibatalkan">#FF5F6368</color>
+    <color name="status_dibatalkan_container">#FFE3E3E6</color>
 </resources>
