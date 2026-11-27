@@ -142,6 +142,9 @@
     <string name="cd_filter">Filter</string>
     <string name="cd_ekspor">Ekspor laporan</string>
     <string name="cd_keluar">Keluar dari akun</string>
+    <string name="cd_pilih_tanggal">Pilih tanggal</string>
+    <string name="cd_hapus_tanggal">Hapus tanggal</string>
+    <string name="cd_ikon_error">Ikon kesalahan</string>
 
     <!-- Pesan loading, error, dan kosong -->
     <string name="msg_memuat">Memuat data…</string>
