@@ -1,6 +1,6 @@
 package com.example.subtrack.viewmodel
 
-import com.example.subtrack.repositori.HasilApi
+import com.example.subtrack.model.repository.HasilApi
 
 // Hasil pemetaan errors[] dari backend ke form
 data class ErrorTerpetakan(
