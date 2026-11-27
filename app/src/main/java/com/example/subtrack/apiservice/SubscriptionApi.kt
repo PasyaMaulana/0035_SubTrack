@@ -4,6 +4,7 @@ import com.example.subtrack.modeldata.ApiResponse
 import com.example.subtrack.modeldata.Subscription
 import com.example.subtrack.modeldata.SubscriptionRequest
 import com.example.subtrack.modeldata.SubscriptionStatus
+import com.example.subtrack.modeldata.UpdateSubscriptionRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -29,7 +30,7 @@ interface SubscriptionApi {
     @PUT("subscriptions/{id}")
     suspend fun updateSubscription(
         @Path("id") id: Int,
-        @Body body: SubscriptionRequest
+        @Body body: UpdateSubscriptionRequest
     ): ApiResponse<Subscription>
 
     @DELETE("subscriptions/{id}")

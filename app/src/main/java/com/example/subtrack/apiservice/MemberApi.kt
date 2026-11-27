@@ -3,6 +3,7 @@ package com.example.subtrack.apiservice
 import com.example.subtrack.modeldata.ApiResponse
 import com.example.subtrack.modeldata.Member
 import com.example.subtrack.modeldata.MemberRequest
+import com.example.subtrack.modeldata.UpdateMemberRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -31,7 +32,7 @@ interface MemberApi {
     suspend fun updateMember(
         @Path("groupId") groupId: Int,
         @Path("memberId") memberId: Int,
-        @Body body: MemberRequest
+        @Body body: UpdateMemberRequest
     ): ApiResponse<Member>
 
     @DELETE("groups/{groupId}/members/{memberId}")

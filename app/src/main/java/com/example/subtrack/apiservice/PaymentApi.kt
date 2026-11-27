@@ -4,6 +4,7 @@ import com.example.subtrack.modeldata.ApiResponse
 import com.example.subtrack.modeldata.Payment
 import com.example.subtrack.modeldata.PaymentList
 import com.example.subtrack.modeldata.PaymentRequest
+import com.example.subtrack.modeldata.UpdatePaymentRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -32,7 +33,7 @@ interface PaymentApi {
     suspend fun updatePayment(
         @Path("subscriptionId") subscriptionId: Int,
         @Path("paymentId") paymentId: Int,
-        @Body body: PaymentRequest
+        @Body body: UpdatePaymentRequest
     ): ApiResponse<Payment>
 
     @DELETE("subscriptions/{subscriptionId}/payments/{paymentId}")

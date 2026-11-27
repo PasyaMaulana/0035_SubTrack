@@ -22,7 +22,7 @@ data class ServiceSummary(
     val category: Category
 )
 
-// Body POST/PUT /services (khusus ADMIN)
+// Body POST /services (khusus ADMIN)
 @Serializable
 data class ServiceRequest(
     val name: String,
@@ -30,4 +30,14 @@ data class ServiceRequest(
     val description: String? = null,
     @SerialName("website_url") val websiteUrl: String? = null,
     @SerialName("is_active") val isActive: Boolean = true
+)
+
+// Body PUT /services/:id. Semua field opsional: hanya field yang diisi (bukan null) yang dikirim.
+@Serializable
+data class UpdateServiceRequest(
+    val name: String? = null,
+    val category: Category? = null,
+    val description: String? = null,
+    @SerialName("website_url") val websiteUrl: String? = null,
+    @SerialName("is_active") val isActive: Boolean? = null
 )

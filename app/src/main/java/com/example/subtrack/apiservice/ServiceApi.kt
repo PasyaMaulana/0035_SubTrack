@@ -4,6 +4,7 @@ import com.example.subtrack.modeldata.ApiResponse
 import com.example.subtrack.modeldata.Category
 import com.example.subtrack.modeldata.Service
 import com.example.subtrack.modeldata.ServiceRequest
+import com.example.subtrack.modeldata.UpdateServiceRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -28,7 +29,7 @@ interface ServiceApi {
     suspend fun createService(@Body body: ServiceRequest): ApiResponse<Service>
 
     @PUT("services/{id}")
-    suspend fun updateService(@Path("id") id: Int, @Body body: ServiceRequest): ApiResponse<Service>
+    suspend fun updateService(@Path("id") id: Int, @Body body: UpdateServiceRequest): ApiResponse<Service>
 
     @DELETE("services/{id}")
     suspend fun deleteService(@Path("id") id: Int): ApiResponse<Unit>

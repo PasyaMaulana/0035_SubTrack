@@ -30,7 +30,7 @@ data class GroupSummary(
     val remaining: Long = 0
 )
 
-// Body POST/PUT /groups. due_day 1-28, max_members 2-20.
+// Body POST /groups. due_day 1-28, max_members 2-20.
 @Serializable
 data class GroupRequest(
     @SerialName("service_id") val serviceId: Int,
@@ -40,5 +40,18 @@ data class GroupRequest(
     @SerialName("billing_cycle") val billingCycle: BillingCycle,
     @SerialName("due_day") val dueDay: Int,
     @SerialName("max_members") val maxMembers: Int,
+    val description: String? = null
+)
+
+// Body PUT /groups/:id. Semua field opsional: hanya field yang diisi (bukan null) yang dikirim.
+@Serializable
+data class UpdateGroupRequest(
+    @SerialName("service_id") val serviceId: Int? = null,
+    @SerialName("subscription_id") val subscriptionId: Int? = null,
+    val name: String? = null,
+    @SerialName("total_cost") val totalCost: Long? = null,
+    @SerialName("billing_cycle") val billingCycle: BillingCycle? = null,
+    @SerialName("due_day") val dueDay: Int? = null,
+    @SerialName("max_members") val maxMembers: Int? = null,
     val description: String? = null
 )
