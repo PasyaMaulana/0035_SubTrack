@@ -1,6 +1,9 @@
 package com.example.subtrack.view.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -24,10 +27,20 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
+import com.example.subtrack.view.katalog.KatalogScreen
 
-// Halaman utama setelah login: Scaffold + NavigationBar bawah, menu sesuai role
+// Halaman utama setelah login: Scaffold + NavigationBar bawah, menu sesuai role.
+// Layar form (tambah/ubah) dibuka di NavGraph utama lewat callback onXxx supaya tampil tanpa NavigationBar.
+// pesanHasil = pesan dari form yang baru ditutup, diteruskan ke tab yang sedang tampil.
 @Composable
-fun HalamanUtama(role: Role, modifier: Modifier = Modifier) {
+fun HalamanUtama(
+    role: Role,
+    onTambahLayanan: () -> Unit,
+    onUbahLayanan: (Int) -> Unit,
+    @StringRes pesanHasil: Int?,
+    onPesanHasilDiterima: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     // NavController terpisah khusus perpindahan antar-tab
     val navControllerTab = rememberNavController()
     val entryAktif by navControllerTab.currentBackStackEntryAsState()
@@ -59,15 +72,28 @@ fun HalamanUtama(role: Role, modifier: Modifier = Modifier) {
         },
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
+        // Hanya padding bawah (tinggi NavigationBar). Padding atas tidak dipakai karena
+        // setiap tab punya Scaffold + TopAppBar sendiri yang sudah mengurus status bar.
+        val paddingBawah = PaddingValues(bottom = innerPadding.calculateBottomPadding())
         NavHost(
             navController = navControllerTab,
             startDestination = MenuUtama.DASHBOARD.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(paddingBawah)
+                .consumeWindowInsets(paddingBawah)
         ) {
             menu.forEach { item ->
                 composable(item.route) {
-                    // Sementara: isi tab berupa placeholder, diganti layar fitur di langkah berikutnya
-                    PlaceholderTab(judul = stringResource(item.titleRes))
+                    when (item) {
+                        MenuUtama.KATALOG -> KatalogScreen(
+                            onTambah = onTambahLayanan,
+                            onUbah = onUbahLayanan,
+                            pesanHasil = pesanHasil,
+                            onPesanHasilDiterima = onPesanHasilDiterima
+                        )
+                        // Sementara: tab lain masih placeholder, diganti layar fitur di langkah berikutnya
+                        else -> PlaceholderTab(judul = stringResource(item.titleRes))
+                    }
                 }
             }
         }

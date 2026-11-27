@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,8 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Subscriptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -95,33 +92,6 @@ fun KerangkaAuth(
                 )
                 isi()
             }
-        }
-    }
-}
-
-// Tombol utama form; saat loading tombol nonaktif dan menampilkan indikator putar
-@Composable
-fun TombolUtama(
-    @StringRes teksRes: Int,
-    isLoading: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        enabled = !isLoading,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = dimensionResource(R.dimen.spacing_small))
-            .height(dimensionResource(R.dimen.button_height))
-    ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                strokeWidth = dimensionResource(R.dimen.progress_stroke),
-                modifier = Modifier.size(dimensionResource(R.dimen.icon_medium))
-            )
-        } else {
-            Text(stringResource(teksRes))
         }
     }
 }

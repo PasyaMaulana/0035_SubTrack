@@ -1,6 +1,7 @@
 package com.example.subtrack.viewmodel
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -8,6 +9,8 @@ import com.example.subtrack.SubTrackApplication
 import com.example.subtrack.viewmodel.auth.LoginViewModel
 import com.example.subtrack.viewmodel.auth.RegisterViewModel
 import com.example.subtrack.viewmodel.auth.SesiViewModel
+import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
+import com.example.subtrack.viewmodel.katalog.KatalogViewModel
 
 // Factory semua ViewModel. Dipakai di layar: viewModel(factory = AppViewModelProvider.Factory)
 object AppViewModelProvider {
@@ -15,6 +18,13 @@ object AppViewModelProvider {
         initializer { LoginViewModel(subTrackApplication().container.authRepository) }
         initializer { RegisterViewModel(subTrackApplication().container.authRepository) }
         initializer { SesiViewModel(subTrackApplication().container.authRepository) }
+
+        // Katalog layanan (admin)
+        initializer { KatalogViewModel(subTrackApplication().container.serviceRepository) }
+        initializer {
+            // SavedStateHandle berisi argumen navigasi (id layanan saat mode ubah)
+            FormLayananViewModel(createSavedStateHandle(), subTrackApplication().container.serviceRepository)
+        }
     }
 }
 

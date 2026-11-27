@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
+import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
 
 // Kontrak setiap destinasi: route (alamat navigasi) dan judul layar
 interface DestinasiNavigasi {
@@ -31,6 +32,17 @@ object DestinasiRegister : DestinasiNavigasi {
 object DestinasiUtama : DestinasiNavigasi {
     override val route = "utama"
     override val titleRes = R.string.app_name
+}
+
+// Form tambah/ubah layanan katalog (admin). id opsional: tanpa id = tambah, dengan id = ubah
+object DestinasiFormLayanan : DestinasiNavigasi {
+    private const val BASE = "form_layanan"
+    const val ARG_ID = FormLayananViewModel.ARG_ID
+    override val route = "$BASE?$ARG_ID={$ARG_ID}"
+    override val titleRes = R.string.title_tambah_layanan
+
+    // Rute tujuan navigasi, contoh "form_layanan" atau "form_layanan?id=5"
+    fun buatRute(id: Int? = null): String = if (id == null) BASE else "$BASE?$ARG_ID=$id"
 }
 
 // Tab di NavigationBar halaman utama

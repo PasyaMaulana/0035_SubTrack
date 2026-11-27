@@ -4,7 +4,7 @@ import com.example.subtrack.model.dto.ApiResponse
 import com.example.subtrack.model.dto.Category
 import com.example.subtrack.model.dto.Service
 import com.example.subtrack.model.dto.ServiceRequest
-import com.example.subtrack.model.dto.UpdateServiceRequest
+import kotlinx.serialization.json.JsonObject
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -28,8 +28,10 @@ interface ServiceApi {
     @POST("services")
     suspend fun createService(@Body body: ServiceRequest): ApiResponse<Service>
 
+    // Body berupa JsonObject (dibuat dari UpdateServiceRequest di repository)
+    // supaya website_url bisa dikirim null untuk mengosongkan URL
     @PUT("services/{id}")
-    suspend fun updateService(@Path("id") id: Int, @Body body: UpdateServiceRequest): ApiResponse<Service>
+    suspend fun updateService(@Path("id") id: Int, @Body body: JsonObject): ApiResponse<Service>
 
     @DELETE("services/{id}")
     suspend fun deleteService(@Path("id") id: Int): ApiResponse<Unit>

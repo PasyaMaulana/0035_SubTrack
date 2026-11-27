@@ -38,4 +38,6 @@
     <dimen name="proof_image_height">200dp</dimen>
     <dimen name="form_max_width">480dp</dimen>
     <dimen name="status_view_max_width">360dp</dimen>
+    <!-- Ruang kosong di bawah daftar supaya item terakhir tidak tertutup FAB -->
+    <dimen name="list_bottom_padding_fab">88dp</dimen>
 </resources>

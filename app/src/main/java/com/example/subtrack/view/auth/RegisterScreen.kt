@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.subtrack.R
 import com.example.subtrack.view.components.FieldPassword
 import com.example.subtrack.view.components.FieldTeks
+import com.example.subtrack.view.components.TombolUtama
 import com.example.subtrack.viewmodel.AppViewModelProvider
 import com.example.subtrack.viewmodel.auth.RegisterViewModel
 

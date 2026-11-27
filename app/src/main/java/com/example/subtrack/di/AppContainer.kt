@@ -14,6 +14,8 @@ import com.example.subtrack.model.network.SubscriptionApi
 import com.example.subtrack.model.network.TokenAuthenticator
 import com.example.subtrack.model.repository.AuthRepository
 import com.example.subtrack.model.repository.NetworkAuthRepository
+import com.example.subtrack.model.repository.NetworkServiceRepository
+import com.example.subtrack.model.repository.ServiceRepository
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -23,7 +25,7 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.create
 import java.util.concurrent.TimeUnit
 
-// Kontainer dependency (manual DI). Repository fitur akan ditambahkan di sini nanti.
+// Kontainer dependency (manual DI). Repository fitur didaftarkan di sini.
 interface AppContainer {
     val sessionManager: SessionManager
     val authApi: AuthApi
@@ -36,6 +38,7 @@ interface AppContainer {
 
     // Repository fitur
     val authRepository: AuthRepository
+    val serviceRepository: ServiceRepository
 }
 
 class DefaultAppContainer(context: Context) : AppContainer {
@@ -94,6 +97,9 @@ class DefaultAppContainer(context: Context) : AppContainer {
 
     override val authRepository: AuthRepository by lazy {
         NetworkAuthRepository(authApi, sessionManager, json)
+    }
+    override val serviceRepository: ServiceRepository by lazy {
+        NetworkServiceRepository(serviceApi, json)
     }
 
     private companion object {

@@ -62,3 +62,13 @@ fun StatusIuranChip(status: DuesStatus, modifier: Modifier = Modifier) {
     }
     StatusChip(labelRes = status.label, warnaTeksRes = teks, warnaLatarRes = latar, modifier = modifier)
 }
+
+// Chip status layanan katalog: Aktif (hijau), Nonaktif (abu-abu)
+@Composable
+fun StatusLayananChip(aktif: Boolean, modifier: Modifier = Modifier) {
+    if (aktif) {
+        StatusChip(R.string.label_aktif, R.color.status_aktif, R.color.status_aktif_container, modifier)
+    } else {
+        StatusChip(R.string.label_nonaktif, R.color.status_dibatalkan, R.color.status_dibatalkan_container, modifier)
+    }
+}

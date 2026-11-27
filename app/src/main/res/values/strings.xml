@@ -58,6 +58,10 @@
     <string name="label_deskripsi">Deskripsi</string>
     <string name="label_website">Website</string>
     <string name="label_aktif">Aktif</string>
+    <string name="label_nonaktif">Nonaktif</string>
+    <string name="label_status_layanan_aktif">Tampilkan layanan ini ke pengguna</string>
+    <string name="hint_website">Contoh: https://www.netflix.com</string>
+    <string name="hint_cari_layanan">Cari layanan…</string>
 
     <!-- Label form: langganan -->
     <string name="label_layanan">Layanan</string>
@@ -171,6 +175,10 @@
     <string name="error_jatuh_tempo_rentang">Tanggal harus di antara 1 dan 28</string>
     <string name="error_maks_anggota_rentang">Jumlah anggota harus di antara 2 dan 20</string>
     <string name="error_grup_penuh">Grup sudah mencapai batas anggota</string>
+    <string name="error_nama_layanan_rentang">Nama layanan harus 2 sampai 50 karakter</string>
+    <string name="error_pilih_kategori">Pilih kategori</string>
+    <string name="error_deskripsi_panjang">Deskripsi maksimal 255 karakter</string>
+    <string name="error_url_tidak_valid">Format URL tidak valid</string>
     <string name="error_foto_gagal">Gagal menyimpan foto</string>
     <string name="error_ekspor_gagal">Gagal membuat laporan</string>
     <string name="empty_katalog">Belum ada layanan di katalog</string>
