@@ -18,6 +18,7 @@ import com.example.subtrack.view.auth.LoginScreen
 import com.example.subtrack.view.auth.RegisterScreen
 import com.example.subtrack.view.components.LoadingView
 import com.example.subtrack.view.katalog.FormLayananScreen
+import com.example.subtrack.view.langganan.DetailLanggananScreen
 import com.example.subtrack.viewmodel.AppViewModelProvider
 import com.example.subtrack.viewmodel.auth.SesiViewModel
 import com.example.subtrack.viewmodel.auth.StatusSesi
@@ -81,6 +82,9 @@ fun SubTrackNavGraph(
                 role = role,
                 onTambahLayanan = { navController.navigate(DestinasiFormLayanan.buatRute()) },
                 onUbahLayanan = { id -> navController.navigate(DestinasiFormLayanan.buatRute(id)) },
+                // Sementara belum berfungsi: form langganan dibuat di langkah 11
+                onTambahLangganan = {},
+                onDetailLangganan = { id -> navController.navigate(DestinasiDetailLangganan.buatRute(id)) },
                 pesanHasil = pesanHasil,
                 onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null }
             )
@@ -95,6 +99,17 @@ fun SubTrackNavGraph(
         ) {
             FormLayananScreen(
                 onKembali = { navController.navigateUp() },
+                onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) }
+            )
+        }
+        composable(
+            route = DestinasiDetailLangganan.route,
+            arguments = listOf(navArgument(DestinasiDetailLangganan.ARG_ID) { type = NavType.IntType })
+        ) {
+            DetailLanggananScreen(
+                onKembali = { navController.navigateUp() },
+                // Sementara belum berfungsi: form ubah langganan dibuat di langkah 11
+                onUbah = {},
                 onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) }
             )
         }

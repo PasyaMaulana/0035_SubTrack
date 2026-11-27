@@ -9,27 +9,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.DeleteOutline
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -40,18 +32,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Category
 import com.example.subtrack.model.dto.Service
+import com.example.subtrack.view.components.BarisFilterChip
 import com.example.subtrack.view.components.ConfirmDialog
 import com.example.subtrack.view.components.EmptyView
 import com.example.subtrack.view.components.ErrorView
+import com.example.subtrack.view.components.IsiPenuhBisaRefresh
+import com.example.subtrack.view.components.KolomCari
 import com.example.subtrack.view.components.LoadingView
 import com.example.subtrack.view.components.StatusLayananChip
 import com.example.subtrack.view.components.SubTrackTopAppBar
@@ -104,9 +97,11 @@ fun KatalogScreen(
         Column(modifier = Modifier.padding(innerPadding)) {
             KolomCari(
                 value = viewModel.kataKunci,
-                onValueChange = viewModel::onKataKunciChange
+                onValueChange = viewModel::onKataKunciChange,
+                hintRes = R.string.hint_cari_layanan
             )
-            FilterKategori(
+            BarisFilterChip(
+                pilihan = Category.entries,
                 terpilih = viewModel.kategori,
                 onPilih = viewModel::onKategoriChange
             )
@@ -117,12 +112,12 @@ fun KatalogScreen(
             ) {
                 when (val state = viewModel.uiState) {
                     is KatalogUiState.Loading -> LoadingView()
-                    is KatalogUiState.Error -> IsiPenuh {
+                    is KatalogUiState.Error -> IsiPenuhBisaRefresh {
                         ErrorView(pesan = state.pesan.teks(), onCobaLagi = viewModel::cobaLagi)
                     }
                     is KatalogUiState.Success -> {
                         if (state.daftar.isEmpty()) {
-                            IsiPenuh { KatalogKosong(viewModel.kataKunci, viewModel.kategori, onTambah) }
+                            IsiPenuhBisaRefresh { KatalogKosong(viewModel.kataKunci, viewModel.kategori, onTambah) }
                         } else {
                             DaftarLayanan(
                                 daftar = state.daftar,
@@ -150,68 +145,6 @@ fun KatalogScreen(
             onKonfirmasi = viewModel::hapus,
             onBatal = viewModel::batalHapus
         )
-    }
-}
-
-// Kotak pencarian nama layanan
-@Composable
-private fun KolomCari(
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val focusManager = LocalFocusManager.current
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        placeholder = { Text(stringResource(R.string.hint_cari_layanan)) },
-        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.cd_cari)) },
-        trailingIcon = {
-            if (value.isNotEmpty()) {
-                IconButton(onClick = { onValueChange("") }) {
-                    Icon(Icons.Filled.Clear, contentDescription = stringResource(R.string.cd_hapus_pencarian))
-                }
-            }
-        },
-        singleLine = true,
-        shape = RoundedCornerShape(dimensionResource(R.dimen.radius_extra_large)),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() }),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = dimensionResource(R.dimen.padding_medium))
-    )
-}
-
-// Chip filter kategori: "Semua" + semua nilai enum Category. Chip terpilih ditekan lagi = kembali ke Semua.
-@Composable
-private fun FilterKategori(
-    terpilih: Category?,
-    onPilih: (Category?) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LazyRow(
-        contentPadding = PaddingValues(
-            horizontal = dimensionResource(R.dimen.padding_medium),
-            vertical = dimensionResource(R.dimen.padding_small)
-        ),
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small)),
-        modifier = modifier.fillMaxWidth()
-    ) {
-        item {
-            FilterChip(
-                selected = terpilih == null,
-                onClick = { onPilih(null) },
-                label = { Text(stringResource(R.string.btn_semua)) }
-            )
-        }
-        items(Category.entries) { kategori ->
-            FilterChip(
-                selected = terpilih == kategori,
-                onClick = { onPilih(if (terpilih == kategori) null else kategori) },
-                label = { Text(stringResource(kategori.label)) }
-            )
-        }
     }
 }
 
@@ -309,13 +242,5 @@ private fun KatalogKosong(kataKunci: String, kategori: Category?, onTambah: () -
             aksiRes = R.string.btn_tambah,
             onAksi = onTambah
         )
-    }
-}
-
-// Pull to refresh butuh konten yang bisa di-scroll, jadi Error/Empty dibungkus LazyColumn satu item
-@Composable
-private fun IsiPenuh(isi: @Composable () -> Unit) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        item { Column(modifier = Modifier.fillParentMaxSize()) { isi() } }
     }
 }

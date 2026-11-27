@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
 import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
+import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
 
 // Kontrak setiap destinasi: route (alamat navigasi) dan judul layar
 interface DestinasiNavigasi {
@@ -43,6 +44,16 @@ object DestinasiFormLayanan : DestinasiNavigasi {
 
     // Rute tujuan navigasi, contoh "form_layanan" atau "form_layanan?id=5"
     fun buatRute(id: Int? = null): String = if (id == null) BASE else "$BASE?$ARG_ID=$id"
+}
+
+// Detail langganan (user). id wajib, contoh "detail_langganan/5"
+object DestinasiDetailLangganan : DestinasiNavigasi {
+    private const val BASE = "detail_langganan"
+    const val ARG_ID = DetailLanggananViewModel.ARG_ID
+    override val route = "$BASE/{$ARG_ID}"
+    override val titleRes = R.string.title_detail_langganan
+
+    fun buatRute(id: Int): String = "$BASE/$id"
 }
 
 // Tab di NavigationBar halaman utama

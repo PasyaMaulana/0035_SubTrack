@@ -28,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
 import com.example.subtrack.view.katalog.KatalogScreen
+import com.example.subtrack.view.langganan.LanggananScreen
 
 // Halaman utama setelah login: Scaffold + NavigationBar bawah, menu sesuai role.
 // Layar form (tambah/ubah) dibuka di NavGraph utama lewat callback onXxx supaya tampil tanpa NavigationBar.
@@ -37,6 +38,8 @@ fun HalamanUtama(
     role: Role,
     onTambahLayanan: () -> Unit,
     onUbahLayanan: (Int) -> Unit,
+    onTambahLangganan: () -> Unit,
+    onDetailLangganan: (Int) -> Unit,
     @StringRes pesanHasil: Int?,
     onPesanHasilDiterima: () -> Unit,
     modifier: Modifier = Modifier
@@ -88,6 +91,12 @@ fun HalamanUtama(
                         MenuUtama.KATALOG -> KatalogScreen(
                             onTambah = onTambahLayanan,
                             onUbah = onUbahLayanan,
+                            pesanHasil = pesanHasil,
+                            onPesanHasilDiterima = onPesanHasilDiterima
+                        )
+                        MenuUtama.LANGGANAN -> LanggananScreen(
+                            onTambah = onTambahLangganan,
+                            onDetail = onDetailLangganan,
                             pesanHasil = pesanHasil,
                             onPesanHasilDiterima = onPesanHasilDiterima
                         )

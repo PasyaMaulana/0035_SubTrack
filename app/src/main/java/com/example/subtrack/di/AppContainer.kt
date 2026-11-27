@@ -15,7 +15,9 @@ import com.example.subtrack.model.network.TokenAuthenticator
 import com.example.subtrack.model.repository.AuthRepository
 import com.example.subtrack.model.repository.NetworkAuthRepository
 import com.example.subtrack.model.repository.NetworkServiceRepository
+import com.example.subtrack.model.repository.NetworkSubscriptionRepository
 import com.example.subtrack.model.repository.ServiceRepository
+import com.example.subtrack.model.repository.SubscriptionRepository
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -39,6 +41,7 @@ interface AppContainer {
     // Repository fitur
     val authRepository: AuthRepository
     val serviceRepository: ServiceRepository
+    val subscriptionRepository: SubscriptionRepository
 }
 
 class DefaultAppContainer(context: Context) : AppContainer {
@@ -100,6 +103,9 @@ class DefaultAppContainer(context: Context) : AppContainer {
     }
     override val serviceRepository: ServiceRepository by lazy {
         NetworkServiceRepository(serviceApi, json)
+    }
+    override val subscriptionRepository: SubscriptionRepository by lazy {
+        NetworkSubscriptionRepository(subscriptionApi, json)
     }
 
     private companion object {

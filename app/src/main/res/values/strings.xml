@@ -11,6 +11,9 @@
     <string name="format_hari_lagi">%1$d hari lagi</string>
     <string name="format_total_data">Total: %1$d</string>
     <string name="format_halo">Halo, %1$s</string>
+    <string name="format_harga_siklus">%1$s / %2$s</string>
+    <string name="format_tagihan_berikutnya">Tagihan berikutnya %1$s</string>
+    <string name="nilai_kosong">-</string>
 
     <!-- Login dan register -->
     <string name="login_title">Masuk</string>
@@ -73,6 +76,9 @@
     <string name="label_metode_pembayaran">Metode Pembayaran</string>
     <string name="label_status">Status</string>
     <string name="label_catatan">Catatan</string>
+    <string name="hint_cari_langganan">Cari nama layanan…</string>
+    <string name="label_info_langganan">Informasi Langganan</string>
+    <string name="msg_riwayat_pembayaran_segera">Riwayat pembayaran langganan ini akan tampil di sini</string>
     <string name="hint_tagihan_berikutnya">Kosongkan agar dihitung otomatis</string>
 
     <!-- Label form: pembayaran -->
