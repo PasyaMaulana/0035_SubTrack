@@ -51,11 +51,14 @@ import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
 
 // Detail satu langganan: ringkasan, informasi lengkap, dan tempat riwayat pembayaran.
 // onUbah menerima id langganan; onSelesai menerima pesan (@StringRes) setelah hapus berhasil.
+// pesanHasil = pesan dari form ubah yang baru ditutup; detail dimuat ulang lalu pesan ditampilkan.
 @Composable
 fun DetailLanggananScreen(
     onKembali: () -> Unit,
     onUbah: (Int) -> Unit,
     onSelesai: (Int) -> Unit,
+    @StringRes pesanHasil: Int?,
+    onPesanHasilDiterima: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailLanggananViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -65,6 +68,14 @@ fun DetailLanggananScreen(
     // Hapus berhasil -> tutup detail dan kirim pesan ke daftar
     LaunchedEffect(viewModel.pesanSelesai) {
         viewModel.pesanSelesai?.let(onSelesai)
+    }
+
+    // Kembali dari form ubah -> tampilkan pesan dan muat ulang detail
+    LaunchedEffect(pesanHasil) {
+        if (pesanHasil != null) {
+            viewModel.terimaHasil(pesanHasil)
+            onPesanHasilDiterima()
+        }
     }
 
     val teksPesan = viewModel.pesan?.teks()

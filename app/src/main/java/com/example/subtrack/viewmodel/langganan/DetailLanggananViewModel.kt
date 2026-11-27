@@ -61,6 +61,17 @@ class DetailLanggananViewModel(
         }
     }
 
+    // Kembali dari form ubah: tampilkan pesan lalu muat ulang tanpa layar loading penuh
+    fun terimaHasil(@StringRes pesanRes: Int) {
+        pesan = PesanLayar(teksRes = pesanRes)
+        viewModelScope.launch {
+            when (val hasil = subscriptionRepository.detailLangganan(idLangganan)) {
+                is HasilApi.Sukses -> uiState = DetailLanggananUiState.Success(hasil.data)
+                is HasilApi.Gagal -> pesan = hasil.kePesanLayar()
+            }
+        }
+    }
+
     fun hapusPesan() {
         pesan = null
     }

@@ -33,6 +33,7 @@ import com.example.subtrack.view.langganan.LanggananScreen
 // Halaman utama setelah login: Scaffold + NavigationBar bawah, menu sesuai role.
 // Layar form (tambah/ubah) dibuka di NavGraph utama lewat callback onXxx supaya tampil tanpa NavigationBar.
 // pesanHasil = pesan dari form yang baru ditutup, diteruskan ke tab yang sedang tampil.
+// perluMuatUlang = data langganan berubah dari layar lain (detail), daftar dimuat ulang tanpa pesan.
 @Composable
 fun HalamanUtama(
     role: Role,
@@ -42,6 +43,8 @@ fun HalamanUtama(
     onDetailLangganan: (Int) -> Unit,
     @StringRes pesanHasil: Int?,
     onPesanHasilDiterima: () -> Unit,
+    perluMuatUlang: Boolean,
+    onMuatUlangDiterima: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // NavController terpisah khusus perpindahan antar-tab
@@ -98,7 +101,9 @@ fun HalamanUtama(
                             onTambah = onTambahLangganan,
                             onDetail = onDetailLangganan,
                             pesanHasil = pesanHasil,
-                            onPesanHasilDiterima = onPesanHasilDiterima
+                            onPesanHasilDiterima = onPesanHasilDiterima,
+                            perluMuatUlang = perluMuatUlang,
+                            onMuatUlangDiterima = onMuatUlangDiterima
                         )
                         // Sementara: tab lain masih placeholder, diganti layar fitur di langkah berikutnya
                         else -> PlaceholderTab(judul = stringResource(item.titleRes))

@@ -12,6 +12,7 @@ import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
 import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
 import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
+import com.example.subtrack.viewmodel.langganan.FormLanggananViewModel
 
 // Kontrak setiap destinasi: route (alamat navigasi) dan judul layar
 interface DestinasiNavigasi {
@@ -54,6 +55,17 @@ object DestinasiDetailLangganan : DestinasiNavigasi {
     override val titleRes = R.string.title_detail_langganan
 
     fun buatRute(id: Int): String = "$BASE/$id"
+}
+
+// Form tambah/ubah langganan (user). id opsional: tanpa id = tambah, dengan id = ubah
+object DestinasiFormLangganan : DestinasiNavigasi {
+    private const val BASE = "form_langganan"
+    const val ARG_ID = FormLanggananViewModel.ARG_ID
+    override val route = "$BASE?$ARG_ID={$ARG_ID}"
+    override val titleRes = R.string.title_tambah_langganan
+
+    // Rute tujuan navigasi, contoh "form_langganan" atau "form_langganan?id=5"
+    fun buatRute(id: Int? = null): String = if (id == null) BASE else "$BASE?$ARG_ID=$id"
 }
 
 // Tab di NavigationBar halaman utama

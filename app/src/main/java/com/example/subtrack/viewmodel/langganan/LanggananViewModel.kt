@@ -91,6 +91,11 @@ class LanggananViewModel(private val subscriptionRepository: SubscriptionReposit
         muat()
     }
 
+    // Data berubah di layar lain (ubah dari detail): muat ulang tanpa pesan, daftar lama tetap tampil
+    fun muatUlang() {
+        muat()
+    }
+
     fun hapusPesan() {
         pesan = null
     }

@@ -19,6 +19,7 @@ import com.example.subtrack.view.auth.RegisterScreen
 import com.example.subtrack.view.components.LoadingView
 import com.example.subtrack.view.katalog.FormLayananScreen
 import com.example.subtrack.view.langganan.DetailLanggananScreen
+import com.example.subtrack.view.langganan.FormLanggananScreen
 import com.example.subtrack.viewmodel.AppViewModelProvider
 import com.example.subtrack.viewmodel.auth.SesiViewModel
 import com.example.subtrack.viewmodel.auth.StatusSesi
@@ -78,15 +79,20 @@ fun SubTrackNavGraph(
             val pesanHasil by entry.savedStateHandle
                 .getStateFlow<Int?>(KUNCI_PESAN_HASIL, null)
                 .collectAsStateWithLifecycle()
+            // Penanda muat ulang daftar langganan (diset saat langganan diubah dari layar detail)
+            val perluMuatUlang by entry.savedStateHandle
+                .getStateFlow(KUNCI_MUAT_ULANG, false)
+                .collectAsStateWithLifecycle()
             HalamanUtama(
                 role = role,
                 onTambahLayanan = { navController.navigate(DestinasiFormLayanan.buatRute()) },
                 onUbahLayanan = { id -> navController.navigate(DestinasiFormLayanan.buatRute(id)) },
-                // Sementara belum berfungsi: form langganan dibuat di langkah 11
-                onTambahLangganan = {},
+                onTambahLangganan = { navController.navigate(DestinasiFormLangganan.buatRute()) },
                 onDetailLangganan = { id -> navController.navigate(DestinasiDetailLangganan.buatRute(id)) },
                 pesanHasil = pesanHasil,
-                onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null }
+                onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null },
+                perluMuatUlang = perluMuatUlang,
+                onMuatUlangDiterima = { entry.savedStateHandle[KUNCI_MUAT_ULANG] = false }
             )
         }
         composable(
@@ -105,11 +111,29 @@ fun SubTrackNavGraph(
         composable(
             route = DestinasiDetailLangganan.route,
             arguments = listOf(navArgument(DestinasiDetailLangganan.ARG_ID) { type = NavType.IntType })
-        ) {
+        ) { entry ->
+            // Pesan hasil dari form ubah yang dibuka dari detail ini
+            val pesanHasil by entry.savedStateHandle
+                .getStateFlow<Int?>(KUNCI_PESAN_HASIL, null)
+                .collectAsStateWithLifecycle()
             DetailLanggananScreen(
                 onKembali = { navController.navigateUp() },
-                // Sementara belum berfungsi: form ubah langganan dibuat di langkah 11
-                onUbah = {},
+                onUbah = { id -> navController.navigate(DestinasiFormLangganan.buatRute(id)) },
+                onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) },
+                pesanHasil = pesanHasil,
+                onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null }
+            )
+        }
+        composable(
+            route = DestinasiFormLangganan.route,
+            // id opsional: default -1 berarti mode tambah
+            arguments = listOf(navArgument(DestinasiFormLangganan.ARG_ID) {
+                type = NavType.IntType
+                defaultValue = -1
+            })
+        ) {
+            FormLanggananScreen(
+                onKembali = { navController.navigateUp() },
                 onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) }
             )
         }
@@ -124,11 +148,23 @@ private fun NavHostController.keHalamanUtama() {
     }
 }
 
-// Tutup form dan titipkan pesan hasil ke layar sebelumnya (halaman utama)
+// Tutup layar dan titipkan pesan hasil ke layar sebelumnya (halaman utama atau detail).
+// Jika layar sebelumnya bukan halaman utama (contoh form ubah dibuka dari detail),
+// halaman utama juga diberi penanda agar daftarnya dimuat ulang saat dibuka kembali.
 private fun NavHostController.kembaliDenganPesan(pesanRes: Int) {
-    previousBackStackEntry?.savedStateHandle?.set(KUNCI_PESAN_HASIL, pesanRes)
+    val sebelumnya = previousBackStackEntry
+    sebelumnya?.savedStateHandle?.set(KUNCI_PESAN_HASIL, pesanRes)
+    if (sebelumnya?.destination?.route != DestinasiUtama.route) {
+        val entryUtama = try {
+            getBackStackEntry(DestinasiUtama.route)
+        } catch (e: IllegalArgumentException) {
+            null
+        }
+        entryUtama?.savedStateHandle?.set(KUNCI_MUAT_ULANG, true)
+    }
     popBackStack()
 }
 
-// Kunci savedStateHandle untuk pesan hasil form
+// Kunci savedStateHandle untuk pesan hasil form dan penanda muat ulang daftar
 private const val KUNCI_PESAN_HASIL = "pesan_hasil"
+private const val KUNCI_MUAT_ULANG = "muat_ulang"

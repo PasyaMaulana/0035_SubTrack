@@ -54,6 +54,7 @@ import com.example.subtrack.viewmodel.langganan.LanggananViewModel
 
 // Tab Langganan (user): cari nama layanan, filter status, daftar langganan.
 // pesanHasil = pesan dari detail/form setelah hapus/simpan berhasil (dikirim lewat navigasi).
+// perluMuatUlang = langganan diubah dari layar detail, daftar dimuat ulang tanpa pesan.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LanggananScreen(
@@ -61,6 +62,8 @@ fun LanggananScreen(
     onDetail: (Int) -> Unit,
     @StringRes pesanHasil: Int?,
     onPesanHasilDiterima: () -> Unit,
+    perluMuatUlang: Boolean,
+    onMuatUlangDiterima: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LanggananViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -71,6 +74,13 @@ fun LanggananScreen(
         if (pesanHasil != null) {
             viewModel.terimaHasil(pesanHasil)
             onPesanHasilDiterima()
+        }
+    }
+
+    LaunchedEffect(perluMuatUlang) {
+        if (perluMuatUlang) {
+            viewModel.muatUlang()
+            onMuatUlangDiterima()
         }
     }
 

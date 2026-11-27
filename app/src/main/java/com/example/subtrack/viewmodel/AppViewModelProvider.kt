@@ -12,6 +12,7 @@ import com.example.subtrack.viewmodel.auth.SesiViewModel
 import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
 import com.example.subtrack.viewmodel.katalog.KatalogViewModel
 import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
+import com.example.subtrack.viewmodel.langganan.FormLanggananViewModel
 import com.example.subtrack.viewmodel.langganan.LanggananViewModel
 
 // Factory semua ViewModel. Dipakai di layar: viewModel(factory = AppViewModelProvider.Factory)
@@ -33,6 +34,11 @@ object AppViewModelProvider {
         initializer {
             // SavedStateHandle berisi argumen navigasi (id langganan)
             DetailLanggananViewModel(createSavedStateHandle(), subTrackApplication().container.subscriptionRepository)
+        }
+        initializer {
+            // SavedStateHandle berisi id langganan saat mode ubah; daftar layanan dari ServiceRepository
+            val container = subTrackApplication().container
+            FormLanggananViewModel(createSavedStateHandle(), container.subscriptionRepository, container.serviceRepository)
         }
     }
 }

@@ -3,6 +3,7 @@
     <string name="app_name">SubTrack</string>
     <string name="app_tagline">Catat langganan digital dan kelola patungan</string>
     <string name="format_rupiah">Rp%1$s</string>
+    <string name="prefix_rupiah">Rp</string>
     <string name="format_per_bulan">%1$s / bulan</string>
     <string name="format_tanggal_jatuh_tempo">Jatuh tempo %1$s</string>
     <string name="format_tanggal_tiap_bulan">Tanggal %1$d tiap bulan</string>
@@ -79,7 +80,10 @@
     <string name="hint_cari_langganan">Cari nama layanan…</string>
     <string name="label_info_langganan">Informasi Langganan</string>
     <string name="msg_riwayat_pembayaran_segera">Riwayat pembayaran langganan ini akan tampil di sini</string>
-    <string name="hint_tagihan_berikutnya">Kosongkan agar dihitung otomatis</string>
+    <string name="hint_tagihan_berikutnya">Kosongkan agar dihitung otomatis oleh server</string>
+    <string name="hint_harga">Dalam rupiah, hanya angka</string>
+    <string name="hint_metode_pembayaran">Contoh: GoPay, kartu kredit</string>
+    <string name="hint_layanan_kosong">Belum ada layanan aktif di katalog</string>
 
     <!-- Label form: pembayaran -->
     <string name="label_jumlah">Jumlah</string>
@@ -162,6 +166,7 @@
     <string name="msg_segera_hadir">Halaman %1$s sedang disiapkan</string>
     <string name="msg_berhasil_disimpan">Data berhasil disimpan</string>
     <string name="msg_berhasil_dihapus">Data berhasil dihapus</string>
+    <string name="msg_tidak_ada_perubahan">Tidak ada perubahan</string>
     <string name="msg_berhasil_keluar">Berhasil keluar</string>
     <string name="error_umum">Terjadi kesalahan. Silakan coba lagi.</string>
     <string name="error_jaringan">Tidak dapat terhubung ke server. Periksa koneksi internet.</string>
@@ -185,6 +190,11 @@
     <string name="error_pilih_kategori">Pilih kategori</string>
     <string name="error_deskripsi_panjang">Deskripsi maksimal 255 karakter</string>
     <string name="error_url_tidak_valid">Format URL tidak valid</string>
+    <string name="error_pilih_layanan">Pilih layanan</string>
+    <string name="error_nama_paket_panjang">Nama paket maksimal 50 karakter</string>
+    <string name="error_tagihan_sebelum_mulai">Tanggal tagihan tidak boleh sebelum tanggal mulai</string>
+    <string name="error_metode_panjang">Metode pembayaran maksimal 30 karakter</string>
+    <string name="error_catatan_panjang">Catatan maksimal 255 karakter</string>
     <string name="error_foto_gagal">Gagal menyimpan foto</string>
     <string name="error_ekspor_gagal">Gagal membuat laporan</string>
     <string name="empty_katalog">Belum ada layanan di katalog</string>
