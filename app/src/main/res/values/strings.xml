@@ -79,7 +79,6 @@
     <string name="label_catatan">Catatan</string>
     <string name="hint_cari_langganan">Cari nama layanan…</string>
     <string name="label_info_langganan">Informasi Langganan</string>
-    <string name="msg_riwayat_pembayaran_segera">Riwayat pembayaran langganan ini akan tampil di sini</string>
     <string name="hint_tagihan_berikutnya">Kosongkan agar dihitung otomatis oleh server</string>
     <string name="hint_harga">Dalam rupiah, hanya angka</string>
     <string name="hint_metode_pembayaran">Contoh: GoPay, kartu kredit</string>
@@ -92,6 +91,17 @@
     <string name="label_bukti">Bukti Pembayaran</string>
     <string name="label_total_dibayar">Total Dibayar</string>
     <string name="cd_bukti_pembayaran">Foto bukti pembayaran</string>
+    <string name="label_nominal">Nominal</string>
+    <string name="hint_nominal_default">Terisi otomatis dari harga langganan</string>
+    <string name="hint_bukti">Opsional. Foto disimpan di perangkat ini.</string>
+    <string name="btn_catat_pembayaran">Catat</string>
+    <string name="format_jumlah_pembayaran">%1$d pembayaran</string>
+    <string name="format_tanggal_metode">%1$s · %2$s</string>
+    <string name="cd_ada_bukti">Ada foto bukti</string>
+    <string name="cd_lihat_bukti">lihat foto bukti</string>
+    <string name="cd_menu_lainnya">Pilihan lainnya</string>
+    <string name="cd_tutup">Tutup</string>
+    <string name="msg_bukti_tidak_ditemukan">Foto bukti tidak ditemukan di perangkat ini</string>
 
     <!-- Label form: grup patungan -->
     <string name="label_nama_grup">Nama Grup</string>

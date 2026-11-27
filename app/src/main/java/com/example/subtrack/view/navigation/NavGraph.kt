@@ -20,6 +20,7 @@ import com.example.subtrack.view.components.LoadingView
 import com.example.subtrack.view.katalog.FormLayananScreen
 import com.example.subtrack.view.langganan.DetailLanggananScreen
 import com.example.subtrack.view.langganan.FormLanggananScreen
+import com.example.subtrack.view.pembayaran.FormPembayaranScreen
 import com.example.subtrack.viewmodel.AppViewModelProvider
 import com.example.subtrack.viewmodel.auth.SesiViewModel
 import com.example.subtrack.viewmodel.auth.StatusSesi
@@ -119,6 +120,12 @@ fun SubTrackNavGraph(
             DetailLanggananScreen(
                 onKembali = { navController.navigateUp() },
                 onUbah = { id -> navController.navigate(DestinasiFormLangganan.buatRute(id)) },
+                onTambahPembayaran = { idLangganan ->
+                    navController.navigate(DestinasiFormPembayaran.buatRute(idLangganan))
+                },
+                onUbahPembayaran = { idLangganan, idPembayaran ->
+                    navController.navigate(DestinasiFormPembayaran.buatRute(idLangganan, idPembayaran))
+                },
                 onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) },
                 pesanHasil = pesanHasil,
                 onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null }
@@ -133,6 +140,23 @@ fun SubTrackNavGraph(
             })
         ) {
             FormLanggananScreen(
+                onKembali = { navController.navigateUp() },
+                onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) }
+            )
+        }
+        composable(
+            route = DestinasiFormPembayaran.route,
+            // idPembayaran opsional: default -1 berarti mode tambah
+            arguments = listOf(
+                navArgument(DestinasiFormPembayaran.ARG_ID_LANGGANAN) { type = NavType.IntType },
+                navArgument(DestinasiFormPembayaran.ARG_ID_PEMBAYARAN) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
+            // Dibuka dari detail langganan; pesan hasil membuat detail memuat ulang riwayat pembayaran
+            FormPembayaranScreen(
                 onKembali = { navController.navigateUp() },
                 onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) }
             )

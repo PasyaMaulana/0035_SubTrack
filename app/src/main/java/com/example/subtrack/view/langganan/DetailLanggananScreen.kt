@@ -12,15 +12,12 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ReceiptLong
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -45,22 +42,28 @@ import com.example.subtrack.view.components.LoadingView
 import com.example.subtrack.view.components.StatusLanggananChip
 import com.example.subtrack.view.components.SubTrackTopAppBar
 import com.example.subtrack.view.components.teks
+import com.example.subtrack.view.pembayaran.BagianRiwayatPembayaran
 import com.example.subtrack.viewmodel.AppViewModelProvider
 import com.example.subtrack.viewmodel.langganan.DetailLanggananUiState
 import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
+import com.example.subtrack.viewmodel.pembayaran.RiwayatPembayaranViewModel
 
-// Detail satu langganan: ringkasan, informasi lengkap, dan tempat riwayat pembayaran.
+// Detail satu langganan: ringkasan, informasi lengkap, dan riwayat pembayaran.
 // onUbah menerima id langganan; onSelesai menerima pesan (@StringRes) setelah hapus berhasil.
-// pesanHasil = pesan dari form ubah yang baru ditutup; detail dimuat ulang lalu pesan ditampilkan.
+// onTambahPembayaran menerima id langganan; onUbahPembayaran menerima id langganan dan id pembayaran.
+// pesanHasil = pesan dari form (langganan/pembayaran) yang baru ditutup; data dimuat ulang lalu pesan ditampilkan.
 @Composable
 fun DetailLanggananScreen(
     onKembali: () -> Unit,
     onUbah: (Int) -> Unit,
+    onTambahPembayaran: (Int) -> Unit,
+    onUbahPembayaran: (Int, Int) -> Unit,
     onSelesai: (Int) -> Unit,
     @StringRes pesanHasil: Int?,
     onPesanHasilDiterima: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailLanggananViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: DetailLanggananViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    riwayatViewModel: RiwayatPembayaranViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val state = viewModel.uiState
@@ -70,10 +73,11 @@ fun DetailLanggananScreen(
         viewModel.pesanSelesai?.let(onSelesai)
     }
 
-    // Kembali dari form ubah -> tampilkan pesan dan muat ulang detail
+    // Kembali dari form ubah langganan atau form pembayaran -> tampilkan pesan, muat ulang detail dan riwayat
     LaunchedEffect(pesanHasil) {
         if (pesanHasil != null) {
             viewModel.terimaHasil(pesanHasil)
+            riwayatViewModel.muatUlang()
             onPesanHasilDiterima()
         }
     }
@@ -83,6 +87,15 @@ fun DetailLanggananScreen(
         if (teksPesan != null) {
             snackbarHostState.showSnackbar(teksPesan)
             viewModel.hapusPesan()
+        }
+    }
+
+    // Pesan dari riwayat pembayaran (hapus berhasil/gagal)
+    val teksPesanRiwayat = riwayatViewModel.pesan?.teks()
+    LaunchedEffect(teksPesanRiwayat) {
+        if (teksPesanRiwayat != null) {
+            snackbarHostState.showSnackbar(teksPesanRiwayat)
+            riwayatViewModel.hapusPesan()
         }
     }
 
@@ -129,7 +142,17 @@ fun DetailLanggananScreen(
                 onCobaLagi = viewModel::muat,
                 modifier = modifierIsi
             )
-            is DetailLanggananUiState.Success -> IsiDetail(langganan = state.langganan, modifier = modifierIsi)
+            is DetailLanggananUiState.Success -> IsiDetail(
+                langganan = state.langganan,
+                riwayatPembayaran = {
+                    BagianRiwayatPembayaran(
+                        viewModel = riwayatViewModel,
+                        onTambah = { onTambahPembayaran(state.langganan.id) },
+                        onUbah = { idPembayaran -> onUbahPembayaran(state.langganan.id, idPembayaran) }
+                    )
+                },
+                modifier = modifierIsi
+            )
         }
     }
 
@@ -144,7 +167,11 @@ fun DetailLanggananScreen(
 }
 
 @Composable
-private fun IsiDetail(langganan: Subscription, modifier: Modifier = Modifier) {
+private fun IsiDetail(
+    langganan: Subscription,
+    riwayatPembayaran: @Composable () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -158,7 +185,7 @@ private fun IsiDetail(langganan: Subscription, modifier: Modifier = Modifier) {
         ) {
             KartuRingkasan(langganan)
             KartuInformasi(langganan)
-            BagianRiwayatPembayaran()
+            riwayatPembayaran()
         }
     }
 }
@@ -255,37 +282,4 @@ private fun BarisInfo(@StringRes labelRes: Int, nilai: String, garisBawah: Boole
         )
     }
     if (garisBawah) HorizontalDivider()
-}
-
-// Tempat riwayat pembayaran. Sementara berisi penanda; daftar pembayaran diisi di langkah 12.
-@Composable
-private fun BagianRiwayatPembayaran() {
-    Column(verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small))) {
-        Text(
-            text = stringResource(R.string.title_pembayaran),
-            style = MaterialTheme.typography.titleMedium
-        )
-        OutlinedCard(modifier = Modifier.fillMaxWidth()) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small)),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(dimensionResource(R.dimen.padding_large))
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ReceiptLong,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.outline,
-                    modifier = Modifier.size(dimensionResource(R.dimen.icon_large))
-                )
-                Text(
-                    text = stringResource(R.string.msg_riwayat_pembayaran_segera),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-    }
 }

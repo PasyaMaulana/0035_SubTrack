@@ -14,6 +14,8 @@ import com.example.subtrack.viewmodel.katalog.KatalogViewModel
 import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
 import com.example.subtrack.viewmodel.langganan.FormLanggananViewModel
 import com.example.subtrack.viewmodel.langganan.LanggananViewModel
+import com.example.subtrack.viewmodel.pembayaran.FormPembayaranViewModel
+import com.example.subtrack.viewmodel.pembayaran.RiwayatPembayaranViewModel
 
 // Factory semua ViewModel. Dipakai di layar: viewModel(factory = AppViewModelProvider.Factory)
 object AppViewModelProvider {
@@ -32,13 +34,37 @@ object AppViewModelProvider {
         // Langganan (user)
         initializer { LanggananViewModel(subTrackApplication().container.subscriptionRepository) }
         initializer {
-            // SavedStateHandle berisi argumen navigasi (id langganan)
-            DetailLanggananViewModel(createSavedStateHandle(), subTrackApplication().container.subscriptionRepository)
+            // SavedStateHandle berisi argumen navigasi (id langganan).
+            // PaymentRepository dan PenyimpananFotoBukti dipakai untuk menghapus foto bukti saat langganan dihapus.
+            val container = subTrackApplication().container
+            DetailLanggananViewModel(
+                createSavedStateHandle(),
+                container.subscriptionRepository,
+                container.paymentRepository,
+                container.penyimpananFotoBukti
+            )
         }
         initializer {
             // SavedStateHandle berisi id langganan saat mode ubah; daftar layanan dari ServiceRepository
             val container = subTrackApplication().container
             FormLanggananViewModel(createSavedStateHandle(), container.subscriptionRepository, container.serviceRepository)
+        }
+
+        // Pembayaran (user)
+        initializer {
+            // SavedStateHandle berisi id langganan dari rute detail langganan
+            val container = subTrackApplication().container
+            RiwayatPembayaranViewModel(createSavedStateHandle(), container.paymentRepository, container.penyimpananFotoBukti)
+        }
+        initializer {
+            // SavedStateHandle berisi id langganan dan id pembayaran (mode ubah)
+            val container = subTrackApplication().container
+            FormPembayaranViewModel(
+                createSavedStateHandle(),
+                container.paymentRepository,
+                container.subscriptionRepository,
+                container.penyimpananFotoBukti
+            )
         }
     }
 }

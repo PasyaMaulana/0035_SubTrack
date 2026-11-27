@@ -10,10 +10,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Subscription
 import com.example.subtrack.model.repository.HasilApi
+import com.example.subtrack.model.repository.PaymentRepository
 import com.example.subtrack.model.repository.SubscriptionRepository
+import com.example.subtrack.util.PenyimpananFotoBukti
 import com.example.subtrack.viewmodel.PesanLayar
 import com.example.subtrack.viewmodel.kePesanLayar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // State detail langganan
 sealed interface DetailLanggananUiState {
@@ -24,7 +28,9 @@ sealed interface DetailLanggananUiState {
 
 class DetailLanggananViewModel(
     savedStateHandle: SavedStateHandle,
-    private val subscriptionRepository: SubscriptionRepository
+    private val subscriptionRepository: SubscriptionRepository,
+    private val paymentRepository: PaymentRepository,
+    private val penyimpananFotoBukti: PenyimpananFotoBukti
 ) : ViewModel() {
 
     // id dari argumen navigasi (wajib ada di rute detail)
@@ -89,13 +95,29 @@ class DetailLanggananViewModel(
         tampilDialogHapus = false
         isMenghapus = true
         viewModelScope.launch {
+            // Server ikut menghapus semua pembayaran (CASCADE), tetapi foto bukti ada di perangkat.
+            // Jadi nama fotonya dicatat dulu, sebelum datanya hilang dari server.
+            val fotoBukti = daftarFotoBukti()
             when (val hasil = subscriptionRepository.hapusLangganan(idLangganan)) {
-                is HasilApi.Sukses -> pesanSelesai = R.string.msg_berhasil_dihapus
+                is HasilApi.Sukses -> {
+                    // Foto baru dihapus setelah langganan benar-benar terhapus di server
+                    withContext(Dispatchers.IO) { fotoBukti.forEach(penyimpananFotoBukti::hapus) }
+                    pesanSelesai = R.string.msg_berhasil_dihapus
+                }
+                // Gagal hapus -> data dan foto tetap ada, tidak ada file yang dihapus
                 is HasilApi.Gagal -> pesan = hasil.kePesanLayar()
             }
             isMenghapus = false
         }
     }
+
+    // Nama file foto bukti semua pembayaran langganan ini ("" dan null dilewati).
+    // Jika daftar gagal diambil, langganan tetap dihapus; fotonya saja yang tidak ikut terhapus.
+    private suspend fun daftarFotoBukti(): List<String> =
+        when (val hasil = paymentRepository.daftarPembayaran(idLangganan)) {
+            is HasilApi.Sukses -> hasil.data.payments.mapNotNull { it.namaFileBukti }.distinct()
+            is HasilApi.Gagal -> emptyList()
+        }
 
     companion object {
         // Nama argumen navigasi, dipakai juga oleh Destinasi

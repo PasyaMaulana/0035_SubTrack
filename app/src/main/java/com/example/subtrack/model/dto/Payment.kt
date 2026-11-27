@@ -13,7 +13,11 @@ data class Payment(
     val method: String? = null,
     @SerialName("proof_file_name") val proofFileName: String? = null,
     val note: String? = null
-)
+) {
+    // Nama file bukti yang benar-benar terisi. "" atau null (atau hanya spasi) = tidak ada bukti.
+    // Properti tanpa backing field, jadi tidak ikut diserialisasi.
+    val namaFileBukti: String? get() = proofFileName?.takeIf { it.isNotBlank() }
+}
 
 // data dari GET /subscriptions/:id/payments: { total, payments }
 @Serializable

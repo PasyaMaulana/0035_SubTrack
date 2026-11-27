@@ -14,10 +14,13 @@ import com.example.subtrack.model.network.SubscriptionApi
 import com.example.subtrack.model.network.TokenAuthenticator
 import com.example.subtrack.model.repository.AuthRepository
 import com.example.subtrack.model.repository.NetworkAuthRepository
+import com.example.subtrack.model.repository.NetworkPaymentRepository
 import com.example.subtrack.model.repository.NetworkServiceRepository
 import com.example.subtrack.model.repository.NetworkSubscriptionRepository
+import com.example.subtrack.model.repository.PaymentRepository
 import com.example.subtrack.model.repository.ServiceRepository
 import com.example.subtrack.model.repository.SubscriptionRepository
+import com.example.subtrack.util.PenyimpananFotoBukti
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -42,6 +45,10 @@ interface AppContainer {
     val authRepository: AuthRepository
     val serviceRepository: ServiceRepository
     val subscriptionRepository: SubscriptionRepository
+    val paymentRepository: PaymentRepository
+
+    // Penyimpanan foto bukti pembayaran di filesDir/bukti/
+    val penyimpananFotoBukti: PenyimpananFotoBukti
 }
 
 class DefaultAppContainer(context: Context) : AppContainer {
@@ -107,6 +114,11 @@ class DefaultAppContainer(context: Context) : AppContainer {
     override val subscriptionRepository: SubscriptionRepository by lazy {
         NetworkSubscriptionRepository(subscriptionApi, json)
     }
+    override val paymentRepository: PaymentRepository by lazy {
+        NetworkPaymentRepository(paymentApi, json)
+    }
+
+    override val penyimpananFotoBukti = PenyimpananFotoBukti(context)
 
     private companion object {
         const val TIMEOUT_DETIK = 30L

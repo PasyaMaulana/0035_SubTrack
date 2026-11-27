@@ -13,6 +13,7 @@ import com.example.subtrack.model.dto.Role
 import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
 import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
 import com.example.subtrack.viewmodel.langganan.FormLanggananViewModel
+import com.example.subtrack.viewmodel.pembayaran.FormPembayaranViewModel
 
 // Kontrak setiap destinasi: route (alamat navigasi) dan judul layar
 interface DestinasiNavigasi {
@@ -66,6 +67,19 @@ object DestinasiFormLangganan : DestinasiNavigasi {
 
     // Rute tujuan navigasi, contoh "form_langganan" atau "form_langganan?id=5"
     fun buatRute(id: Int? = null): String = if (id == null) BASE else "$BASE?$ARG_ID=$id"
+}
+
+// Form tambah/ubah pembayaran satu langganan. idLangganan wajib, idPembayaran opsional (ada = ubah)
+object DestinasiFormPembayaran : DestinasiNavigasi {
+    private const val BASE = "form_pembayaran"
+    const val ARG_ID_LANGGANAN = FormPembayaranViewModel.ARG_ID_LANGGANAN
+    const val ARG_ID_PEMBAYARAN = FormPembayaranViewModel.ARG_ID_PEMBAYARAN
+    override val route = "$BASE/{$ARG_ID_LANGGANAN}?$ARG_ID_PEMBAYARAN={$ARG_ID_PEMBAYARAN}"
+    override val titleRes = R.string.title_tambah_pembayaran
+
+    // Contoh "form_pembayaran/5" (tambah) atau "form_pembayaran/5?idPembayaran=9" (ubah)
+    fun buatRute(idLangganan: Int, idPembayaran: Int? = null): String =
+        if (idPembayaran == null) "$BASE/$idLangganan" else "$BASE/$idLangganan?$ARG_ID_PEMBAYARAN=$idPembayaran"
 }
 
 // Tab di NavigationBar halaman utama
