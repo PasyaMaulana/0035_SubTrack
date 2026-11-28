@@ -9,6 +9,9 @@ import com.example.subtrack.SubTrackApplication
 import com.example.subtrack.viewmodel.auth.LoginViewModel
 import com.example.subtrack.viewmodel.auth.RegisterViewModel
 import com.example.subtrack.viewmodel.auth.SesiViewModel
+import com.example.subtrack.viewmodel.grup.DetailGrupViewModel
+import com.example.subtrack.viewmodel.grup.FormGrupViewModel
+import com.example.subtrack.viewmodel.grup.GrupViewModel
 import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
 import com.example.subtrack.viewmodel.katalog.KatalogViewModel
 import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
@@ -64,6 +67,23 @@ object AppViewModelProvider {
                 container.paymentRepository,
                 container.subscriptionRepository,
                 container.penyimpananFotoBukti
+            )
+        }
+
+        // Grup patungan (user)
+        initializer { GrupViewModel(subTrackApplication().container.groupRepository) }
+        initializer {
+            // SavedStateHandle berisi argumen navigasi (id grup)
+            DetailGrupViewModel(createSavedStateHandle(), subTrackApplication().container.groupRepository)
+        }
+        initializer {
+            // SavedStateHandle berisi id grup saat mode ubah; pilihan layanan dan langganan dari repository masing-masing
+            val container = subTrackApplication().container
+            FormGrupViewModel(
+                createSavedStateHandle(),
+                container.groupRepository,
+                container.serviceRepository,
+                container.subscriptionRepository
             )
         }
     }

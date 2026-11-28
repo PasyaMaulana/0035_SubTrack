@@ -2,6 +2,7 @@ package com.example.subtrack.model.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 // Grup patungan untuk berbagi biaya langganan
 @Serializable
@@ -44,10 +45,15 @@ data class GroupRequest(
 )
 
 // Body PUT /groups/:id. Semua field opsional: hanya field yang diisi (bukan null) yang dikirim.
+// subscription_id memakai JsonElement karena ada tiga kemungkinan:
+//   null (Kotlin)       -> field tidak dikirim, langganan terkait tidak berubah
+//   JsonPrimitive(id)   -> tautkan ke langganan id
+//   JsonNull            -> dikirim "subscription_id": null, lepaskan langganan terkait
+// (Json memakai explicitNulls = false, jadi Int? null tidak akan pernah terkirim sebagai null.)
 @Serializable
 data class UpdateGroupRequest(
     @SerialName("service_id") val serviceId: Int? = null,
-    @SerialName("subscription_id") val subscriptionId: Int? = null,
+    @SerialName("subscription_id") val subscriptionId: JsonElement? = null,
     val name: String? = null,
     @SerialName("total_cost") val totalCost: Long? = null,
     @SerialName("billing_cycle") val billingCycle: BillingCycle? = null,

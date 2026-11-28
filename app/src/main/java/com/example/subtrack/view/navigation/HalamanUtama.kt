@@ -27,13 +27,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
+import com.example.subtrack.view.grup.GrupScreen
 import com.example.subtrack.view.katalog.KatalogScreen
 import com.example.subtrack.view.langganan.LanggananScreen
 
 // Halaman utama setelah login: Scaffold + NavigationBar bawah, menu sesuai role.
 // Layar form (tambah/ubah) dibuka di NavGraph utama lewat callback onXxx supaya tampil tanpa NavigationBar.
 // pesanHasil = pesan dari form yang baru ditutup, diteruskan ke tab yang sedang tampil.
-// perluMuatUlang = data langganan berubah dari layar lain (detail), daftar dimuat ulang tanpa pesan.
+// perluMuatUlang = data berubah dari layar lain (detail langganan/grup), daftar tab yang tampil dimuat ulang tanpa pesan.
 @Composable
 fun HalamanUtama(
     role: Role,
@@ -41,6 +42,8 @@ fun HalamanUtama(
     onUbahLayanan: (Int) -> Unit,
     onTambahLangganan: () -> Unit,
     onDetailLangganan: (Int) -> Unit,
+    onTambahGrup: () -> Unit,
+    onDetailGrup: (Int) -> Unit,
     @StringRes pesanHasil: Int?,
     onPesanHasilDiterima: () -> Unit,
     perluMuatUlang: Boolean,
@@ -100,6 +103,14 @@ fun HalamanUtama(
                         MenuUtama.LANGGANAN -> LanggananScreen(
                             onTambah = onTambahLangganan,
                             onDetail = onDetailLangganan,
+                            pesanHasil = pesanHasil,
+                            onPesanHasilDiterima = onPesanHasilDiterima,
+                            perluMuatUlang = perluMuatUlang,
+                            onMuatUlangDiterima = onMuatUlangDiterima
+                        )
+                        MenuUtama.GRUP -> GrupScreen(
+                            onTambah = onTambahGrup,
+                            onDetail = onDetailGrup,
                             pesanHasil = pesanHasil,
                             onPesanHasilDiterima = onPesanHasilDiterima,
                             perluMuatUlang = perluMuatUlang,

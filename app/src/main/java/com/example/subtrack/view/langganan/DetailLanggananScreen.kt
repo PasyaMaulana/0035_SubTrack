@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -29,13 +28,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Subscription
 import com.example.subtrack.util.tanggalTampilan
 import com.example.subtrack.util.teksRupiah
 import com.example.subtrack.view.components.AksiTopAppBar
+import com.example.subtrack.view.components.BarisInfo
 import com.example.subtrack.view.components.ConfirmDialog
 import com.example.subtrack.view.components.ErrorView
 import com.example.subtrack.view.components.LoadingView
@@ -258,28 +257,4 @@ private fun KartuInformasi(langganan: Subscription) {
             )
         }
     }
-}
-
-@Composable
-private fun BarisInfo(@StringRes labelRes: Int, nilai: String, garisBawah: Boolean = true) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_large)),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = dimensionResource(R.dimen.padding_small))
-    ) {
-        Text(
-            text = stringResource(labelRes),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = nilai,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.End,
-            modifier = Modifier.weight(1f)
-        )
-    }
-    if (garisBawah) HorizontalDivider()
 }

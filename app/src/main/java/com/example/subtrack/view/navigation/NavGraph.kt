@@ -17,6 +17,8 @@ import com.example.subtrack.model.dto.Role
 import com.example.subtrack.view.auth.LoginScreen
 import com.example.subtrack.view.auth.RegisterScreen
 import com.example.subtrack.view.components.LoadingView
+import com.example.subtrack.view.grup.DetailGrupScreen
+import com.example.subtrack.view.grup.FormGrupScreen
 import com.example.subtrack.view.katalog.FormLayananScreen
 import com.example.subtrack.view.langganan.DetailLanggananScreen
 import com.example.subtrack.view.langganan.FormLanggananScreen
@@ -90,6 +92,8 @@ fun SubTrackNavGraph(
                 onUbahLayanan = { id -> navController.navigate(DestinasiFormLayanan.buatRute(id)) },
                 onTambahLangganan = { navController.navigate(DestinasiFormLangganan.buatRute()) },
                 onDetailLangganan = { id -> navController.navigate(DestinasiDetailLangganan.buatRute(id)) },
+                onTambahGrup = { navController.navigate(DestinasiFormGrup.buatRute()) },
+                onDetailGrup = { id -> navController.navigate(DestinasiDetailGrup.buatRute(id)) },
                 pesanHasil = pesanHasil,
                 onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null },
                 perluMuatUlang = perluMuatUlang,
@@ -157,6 +161,35 @@ fun SubTrackNavGraph(
         ) {
             // Dibuka dari detail langganan; pesan hasil membuat detail memuat ulang riwayat pembayaran
             FormPembayaranScreen(
+                onKembali = { navController.navigateUp() },
+                onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) }
+            )
+        }
+        composable(
+            route = DestinasiDetailGrup.route,
+            arguments = listOf(navArgument(DestinasiDetailGrup.ARG_ID) { type = NavType.IntType })
+        ) { entry ->
+            // Pesan hasil dari form ubah yang dibuka dari detail ini
+            val pesanHasil by entry.savedStateHandle
+                .getStateFlow<Int?>(KUNCI_PESAN_HASIL, null)
+                .collectAsStateWithLifecycle()
+            DetailGrupScreen(
+                onKembali = { navController.navigateUp() },
+                onUbah = { id -> navController.navigate(DestinasiFormGrup.buatRute(id)) },
+                onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) },
+                pesanHasil = pesanHasil,
+                onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null }
+            )
+        }
+        composable(
+            route = DestinasiFormGrup.route,
+            // id opsional: default -1 berarti mode tambah
+            arguments = listOf(navArgument(DestinasiFormGrup.ARG_ID) {
+                type = NavType.IntType
+                defaultValue = -1
+            })
+        ) {
+            FormGrupScreen(
                 onKembali = { navController.navigateUp() },
                 onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) }
             )

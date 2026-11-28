@@ -10,6 +10,8 @@ import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
+import com.example.subtrack.viewmodel.grup.DetailGrupViewModel
+import com.example.subtrack.viewmodel.grup.FormGrupViewModel
 import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
 import com.example.subtrack.viewmodel.langganan.DetailLanggananViewModel
 import com.example.subtrack.viewmodel.langganan.FormLanggananViewModel
@@ -80,6 +82,27 @@ object DestinasiFormPembayaran : DestinasiNavigasi {
     // Contoh "form_pembayaran/5" (tambah) atau "form_pembayaran/5?idPembayaran=9" (ubah)
     fun buatRute(idLangganan: Int, idPembayaran: Int? = null): String =
         if (idPembayaran == null) "$BASE/$idLangganan" else "$BASE/$idLangganan?$ARG_ID_PEMBAYARAN=$idPembayaran"
+}
+
+// Detail grup patungan (user). id wajib, contoh "detail_grup/3"
+object DestinasiDetailGrup : DestinasiNavigasi {
+    private const val BASE = "detail_grup"
+    const val ARG_ID = DetailGrupViewModel.ARG_ID
+    override val route = "$BASE/{$ARG_ID}"
+    override val titleRes = R.string.title_detail_grup
+
+    fun buatRute(id: Int): String = "$BASE/$id"
+}
+
+// Form tambah/ubah grup patungan (user). id opsional: tanpa id = tambah, dengan id = ubah
+object DestinasiFormGrup : DestinasiNavigasi {
+    private const val BASE = "form_grup"
+    const val ARG_ID = FormGrupViewModel.ARG_ID
+    override val route = "$BASE?$ARG_ID={$ARG_ID}"
+    override val titleRes = R.string.title_tambah_grup
+
+    // Rute tujuan navigasi, contoh "form_grup" atau "form_grup?id=3"
+    fun buatRute(id: Int? = null): String = if (id == null) BASE else "$BASE?$ARG_ID=$id"
 }
 
 // Tab di NavigationBar halaman utama

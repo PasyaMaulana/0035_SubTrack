@@ -113,6 +113,18 @@
     <string name="label_iuran_disarankan">Iuran Disarankan</string>
     <string name="label_terkumpul">Terkumpul</string>
     <string name="label_sisa">Sisa</string>
+    <string name="label_info_grup">Informasi Grup</string>
+    <string name="label_ringkasan_iuran">Ringkasan Iuran</string>
+    <string name="label_langganan_terkait_singkat">Langganan Terkait</string>
+    <string name="label_jatuh_tempo">Jatuh Tempo</string>
+    <string name="label_jumlah_anggota">Jumlah Anggota</string>
+    <string name="hint_langganan_terkait">Memilih langganan mengisi layanan dan total biaya otomatis</string>
+    <string name="hint_jatuh_tempo">Iuran ditagih setiap tanggal ini tiap bulan</string>
+    <string name="hint_maks_anggota">Iuran disarankan = total biaya dibagi jumlah ini</string>
+    <string name="format_jumlah_lunas">%1$d dari %2$d lunas</string>
+    <string name="format_terkumpul_dari">%1$s dari %2$s</string>
+    <string name="format_langganan_pilihan">%1$s · %2$s</string>
+    <string name="msg_anggota_segera">Daftar anggota grup ini akan tampil di sini</string>
 
     <!-- Label form: anggota -->
     <string name="label_nama_anggota">Nama Anggota</string>
@@ -194,6 +206,7 @@
     <string name="error_angka_tidak_valid">Masukkan angka yang valid</string>
     <string name="error_harus_lebih_dari_nol">Nilai harus lebih dari 0</string>
     <string name="error_jatuh_tempo_rentang">Tanggal harus di antara 1 dan 28</string>
+    <string name="error_nama_grup_rentang">Nama grup harus 3 sampai 50 karakter</string>
     <string name="error_maks_anggota_rentang">Jumlah anggota harus di antara 2 dan 20</string>
     <string name="error_grup_penuh">Grup sudah mencapai batas anggota</string>
     <string name="error_nama_layanan_rentang">Nama layanan harus 2 sampai 50 karakter</string>
