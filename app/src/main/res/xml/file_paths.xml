@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Folder yang boleh dibagikan lewat FileProvider. Hanya cacheDir/laporan/ (file CSV ekspor). -->
+<paths>
+    <cache-path
+        name="laporan"
+        path="laporan/" />
+</paths>

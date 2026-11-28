@@ -41,7 +41,11 @@ object AppViewModelProvider {
         }
 
         // Langganan (user)
-        initializer { LanggananViewModel(subTrackApplication().container.subscriptionRepository) }
+        initializer {
+            // PaymentRepository dan EksporCsv dipakai untuk ekspor laporan CSV
+            val container = subTrackApplication().container
+            LanggananViewModel(container.subscriptionRepository, container.paymentRepository, container.eksporCsv)
+        }
         initializer {
             // SavedStateHandle berisi argumen navigasi (id langganan).
             // PaymentRepository dan PenyimpananFotoBukti dipakai untuk menghapus foto bukti saat langganan dihapus.

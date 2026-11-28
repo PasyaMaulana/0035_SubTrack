@@ -26,6 +26,7 @@ import com.example.subtrack.model.repository.NetworkSubscriptionRepository
 import com.example.subtrack.model.repository.PaymentRepository
 import com.example.subtrack.model.repository.ServiceRepository
 import com.example.subtrack.model.repository.SubscriptionRepository
+import com.example.subtrack.util.EksporCsv
 import com.example.subtrack.util.PenyimpananFotoBukti
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -58,6 +59,9 @@ interface AppContainer {
 
     // Penyimpanan foto bukti pembayaran di filesDir/bukti/
     val penyimpananFotoBukti: PenyimpananFotoBukti
+
+    // Pembuat laporan CSV di cacheDir/laporan/
+    val eksporCsv: EksporCsv
 }
 
 class DefaultAppContainer(context: Context) : AppContainer {
@@ -137,6 +141,8 @@ class DefaultAppContainer(context: Context) : AppContainer {
     }
 
     override val penyimpananFotoBukti = PenyimpananFotoBukti(context)
+
+    override val eksporCsv = EksporCsv(context)
 
     private companion object {
         const val TIMEOUT_DETIK = 30L

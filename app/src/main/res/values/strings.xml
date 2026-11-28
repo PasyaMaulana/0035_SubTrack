@@ -171,6 +171,29 @@
     <string name="empty_tagihan_hari">Tidak ada tagihan dalam %1$d hari ke depan</string>
     <string name="empty_layanan_populer">Belum ada layanan yang dilanggan</string>
 
+    <!-- Ekspor laporan CSV -->
+    <string name="msg_menyiapkan_laporan">Menyiapkan laporan…</string>
+    <string name="msg_ekspor_kosong">Belum ada langganan untuk diekspor</string>
+    <string name="error_tidak_ada_aplikasi_bagikan">Tidak ada aplikasi untuk membagikan laporan</string>
+    <string name="title_bagikan_laporan">Bagikan laporan</string>
+    <string name="format_subjek_laporan">Laporan SubTrack %1$s</string>
+    <string name="csv_judul_laporan">Laporan SubTrack</string>
+    <string name="csv_tanggal_ekspor">Tanggal Ekspor</string>
+    <string name="csv_judul_langganan">Daftar Langganan</string>
+    <string name="csv_judul_pembayaran">Riwayat Pembayaran</string>
+    <string name="csv_kolom_layanan">Layanan</string>
+    <string name="csv_kolom_kategori">Kategori</string>
+    <string name="csv_kolom_paket">Paket</string>
+    <string name="csv_kolom_harga">Harga (Rp)</string>
+    <string name="csv_kolom_siklus">Siklus</string>
+    <string name="csv_kolom_status">Status</string>
+    <string name="csv_kolom_tanggal_mulai">Tanggal Mulai</string>
+    <string name="csv_kolom_tagihan_berikutnya">Tagihan Berikutnya</string>
+    <string name="csv_kolom_metode">Metode</string>
+    <string name="csv_kolom_tanggal_bayar">Tanggal Bayar</string>
+    <string name="csv_kolom_nominal">Nominal (Rp)</string>
+    <string name="csv_kolom_catatan">Catatan</string>
+
     <!-- Tombol umum -->
     <string name="btn_simpan">Simpan</string>
     <string name="btn_batal">Batal</string>

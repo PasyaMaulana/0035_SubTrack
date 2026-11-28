@@ -1,6 +1,11 @@
 package com.example.subtrack.view.langganan
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,13 +13,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -30,6 +38,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,8 +48,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Subscription
 import com.example.subtrack.model.dto.SubscriptionStatus
+import com.example.subtrack.util.hariIniApi
 import com.example.subtrack.util.tanggalTampilan
 import com.example.subtrack.util.teksRupiah
+import com.example.subtrack.view.components.AksiTopAppBar
 import com.example.subtrack.view.components.BarisFilterChip
 import com.example.subtrack.view.components.EmptyView
 import com.example.subtrack.view.components.ErrorView
@@ -68,6 +81,16 @@ fun LanggananScreen(
     viewModel: LanggananViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
+    // Laporan CSV selesai dibuat -> buka chooser untuk dibagikan (WhatsApp, email, Drive, dll.)
+    val laporanSiap = viewModel.laporanSiap
+    LaunchedEffect(laporanSiap) {
+        if (laporanSiap != null) {
+            if (bagikanLaporan(context, laporanSiap)) viewModel.laporanDitangani()
+            else viewModel.gagalMembagikan()
+        }
+    }
 
     // Hasil dari detail/form -> tampilkan pesan dan muat ulang daftar
     LaunchedEffect(pesanHasil) {
@@ -94,7 +117,12 @@ fun LanggananScreen(
     }
 
     Scaffold(
-        topBar = { SubTrackTopAppBar(titleRes = R.string.menu_langganan) },
+        topBar = {
+            SubTrackTopAppBar(
+                titleRes = R.string.menu_langganan,
+                aksi = { TombolEkspor(sedangEkspor = viewModel.sedangEkspor, onEkspor = viewModel::ekspor) }
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = onTambah) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.cd_tambah))
@@ -146,6 +174,51 @@ fun LanggananScreen(
         }
     }
 }
+
+// Tombol ekspor CSV di TopAppBar; selama laporan disiapkan diganti indikator loading
+@Composable
+private fun TombolEkspor(sedangEkspor: Boolean, onEkspor: () -> Unit) {
+    if (sedangEkspor) {
+        val teksMemuat = stringResource(R.string.msg_menyiapkan_laporan)
+        // Ukuran sama dengan IconButton supaya TopAppBar tidak bergeser
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.size(dimensionResource(R.dimen.button_height))
+        ) {
+            CircularProgressIndicator(
+                strokeWidth = dimensionResource(R.dimen.progress_stroke),
+                modifier = Modifier
+                    .size(dimensionResource(R.dimen.icon_medium))
+                    .semantics { contentDescription = teksMemuat }
+            )
+        }
+    } else {
+        AksiTopAppBar(
+            ikon = Icons.Filled.FileDownload,
+            contentDescriptionRes = R.string.cd_ekspor,
+            onClick = onEkspor
+        )
+    }
+}
+
+// Buka chooser Intent.ACTION_SEND untuk file CSV. false jika tidak ada aplikasi penerima.
+private fun bagikanLaporan(context: Context, uri: Uri): Boolean {
+    val kirim = Intent(Intent.ACTION_SEND).apply {
+        type = TIPE_CSV
+        putExtra(Intent.EXTRA_STREAM, uri)
+        putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.format_subjek_laporan, hariIniApi()))
+        // Izin baca sementara untuk aplikasi penerima
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+    return try {
+        context.startActivity(Intent.createChooser(kirim, context.getString(R.string.title_bagikan_laporan)))
+        true
+    } catch (e: ActivityNotFoundException) {
+        false
+    }
+}
+
+private const val TIPE_CSV = "text/csv"
 
 @Composable
 private fun DaftarLangganan(

@@ -1,5 +1,6 @@
 package com.example.subtrack.viewmodel.langganan
 
+import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,14 +8,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.subtrack.R
+import com.example.subtrack.model.dto.Payment
 import com.example.subtrack.model.dto.Subscription
 import com.example.subtrack.model.dto.SubscriptionStatus
 import com.example.subtrack.model.repository.HasilApi
+import com.example.subtrack.model.repository.PaymentRepository
 import com.example.subtrack.model.repository.SubscriptionRepository
+import com.example.subtrack.util.EksporCsv
 import com.example.subtrack.viewmodel.PesanLayar
 import com.example.subtrack.viewmodel.kePesanLayar
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -28,7 +36,11 @@ sealed interface LanggananUiState {
 }
 
 @OptIn(FlowPreview::class)
-class LanggananViewModel(private val subscriptionRepository: SubscriptionRepository) : ViewModel() {
+class LanggananViewModel(
+    private val subscriptionRepository: SubscriptionRepository,
+    private val paymentRepository: PaymentRepository,
+    private val eksporCsv: EksporCsv
+) : ViewModel() {
 
     var uiState by mutableStateOf<LanggananUiState>(LanggananUiState.Loading)
         private set
@@ -47,6 +59,13 @@ class LanggananViewModel(private val subscriptionRepository: SubscriptionReposit
 
     // Pesan Snackbar sekali tampil
     var pesan by mutableStateOf<PesanLayar?>(null)
+        private set
+
+    // Ekspor CSV: sedangEkspor = indikator loading di TopAppBar.
+    // laporanSiap = Uri file yang siap dibagikan (sekali pakai, dihapus setelah chooser dibuka).
+    var sedangEkspor by mutableStateOf(false)
+        private set
+    var laporanSiap by mutableStateOf<Uri?>(null)
         private set
 
     private var jobMuat: Job? = null
@@ -98,6 +117,61 @@ class LanggananViewModel(private val subscriptionRepository: SubscriptionReposit
 
     fun hapusPesan() {
         pesan = null
+    }
+
+    // Ekspor semua langganan (tanpa filter cari/status) beserta riwayat pembayarannya ke CSV
+    fun ekspor() {
+        if (sedangEkspor) return
+        sedangEkspor = true
+        viewModelScope.launch {
+            when (val hasil = ambilDataLaporan()) {
+                is HasilApi.Gagal -> pesan = hasil.kePesanLayar()
+                is HasilApi.Sukses -> {
+                    val (daftar, pembayaran) = hasil.data
+                    if (daftar.isEmpty()) {
+                        pesan = PesanLayar(teksRes = R.string.msg_ekspor_kosong)
+                    } else {
+                        val uri = eksporCsv.buatLaporan(daftar, pembayaran)
+                        if (uri == null) pesan = PesanLayar(teksRes = R.string.error_ekspor_gagal)
+                        else laporanSiap = uri
+                    }
+                }
+            }
+            sedangEkspor = false
+        }
+    }
+
+    // Dipanggil layar setelah chooser dibuka
+    fun laporanDitangani() {
+        laporanSiap = null
+    }
+
+    // Dipanggil layar jika tidak ada aplikasi yang bisa menerima file
+    fun gagalMembagikan() {
+        laporanSiap = null
+        pesan = PesanLayar(teksRes = R.string.error_tidak_ada_aplikasi_bagikan)
+    }
+
+    // Ambil semua langganan, lalu riwayat pembayaran tiap langganan secara paralel.
+    // Satu request gagal -> seluruh ekspor gagal, supaya laporan tidak setengah jadi.
+    private suspend fun ambilDataLaporan(): HasilApi<Pair<List<Subscription>, Map<Int, List<Payment>>>> {
+        val daftar = when (val hasil = subscriptionRepository.daftarLangganan()) {
+            is HasilApi.Gagal -> return hasil
+            is HasilApi.Sukses -> hasil.data
+        }
+        val hasilPembayaran = coroutineScope {
+            daftar.map { langganan ->
+                async { langganan.id to paymentRepository.daftarPembayaran(langganan.id) }
+            }.awaitAll()
+        }
+        val pembayaran = mutableMapOf<Int, List<Payment>>()
+        hasilPembayaran.forEach { (id, hasil) ->
+            when (hasil) {
+                is HasilApi.Gagal -> return hasil
+                is HasilApi.Sukses -> pembayaran[id] = hasil.data.payments
+            }
+        }
+        return HasilApi.Sukses(daftar to pembayaran)
     }
 
     // Request sebelumnya dibatalkan supaya hasil lama tidak menimpa hasil pencarian terbaru
