@@ -11,6 +11,7 @@ import com.example.subtrack.viewmodel.anggota.FormAnggotaViewModel
 import com.example.subtrack.viewmodel.auth.LoginViewModel
 import com.example.subtrack.viewmodel.auth.RegisterViewModel
 import com.example.subtrack.viewmodel.auth.SesiViewModel
+import com.example.subtrack.viewmodel.dashboard.DashboardViewModel
 import com.example.subtrack.viewmodel.grup.DetailGrupViewModel
 import com.example.subtrack.viewmodel.grup.FormGrupViewModel
 import com.example.subtrack.viewmodel.grup.GrupViewModel
@@ -28,6 +29,9 @@ object AppViewModelProvider {
         initializer { LoginViewModel(subTrackApplication().container.authRepository) }
         initializer { RegisterViewModel(subTrackApplication().container.authRepository) }
         initializer { SesiViewModel(subTrackApplication().container.authRepository) }
+
+        // Dashboard (user dan admin)
+        initializer { DashboardViewModel(subTrackApplication().container.dashboardRepository) }
 
         // Katalog layanan (admin)
         initializer { KatalogViewModel(subTrackApplication().container.serviceRepository) }

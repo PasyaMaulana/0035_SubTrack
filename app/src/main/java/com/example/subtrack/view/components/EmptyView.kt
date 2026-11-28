@@ -33,6 +33,18 @@ fun EmptyView(
     @StringRes aksiRes: Int? = null,
     onAksi: (() -> Unit)? = null
 ) {
+    EmptyView(pesan = stringResource(pesanRes), modifier = modifier, ikon = ikon, aksiRes = aksiRes, onAksi = onAksi)
+}
+
+// Versi dengan teks jadi, untuk pesan berformat (contoh "Tidak ada tagihan dalam 14 hari ke depan")
+@Composable
+fun EmptyView(
+    pesan: String,
+    modifier: Modifier = Modifier,
+    ikon: ImageVector = Icons.Filled.Inbox,
+    @StringRes aksiRes: Int? = null,
+    onAksi: (() -> Unit)? = null
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -52,7 +64,7 @@ fun EmptyView(
                 modifier = Modifier.size(dimensionResource(R.dimen.icon_extra_large))
             )
             Text(
-                text = stringResource(pesanRes),
+                text = pesan,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center

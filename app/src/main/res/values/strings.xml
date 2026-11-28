@@ -147,14 +147,29 @@
     <string name="label_per_kategori">Pengeluaran per Kategori</string>
     <string name="label_tagihan_terdekat">Tagihan Terdekat</string>
     <string name="label_grup_patungan">Grup Patungan</string>
-    <string name="label_anggota_belum_bayar">Anggota Belum Bayar</string>
-    <string name="label_iuran_tertunggak">Iuran Tertunggak</string>
+    <string name="label_anggota_belum_bayar">Anggota Belum Lunas</string>
+    <string name="label_iuran_tertunggak">Iuran Belum Terkumpul</string>
     <string name="label_total_pengguna">Total Pengguna</string>
     <string name="label_total_layanan">Total Layanan</string>
     <string name="label_layanan_aktif">Layanan Aktif</string>
     <string name="label_total_grup">Total Grup</string>
     <string name="label_layanan_populer">Layanan Populer</string>
     <string name="label_role">Peran</string>
+    <string name="dashboard_subtitle_user">Ringkasan langganan dan patunganmu</string>
+    <string name="dashboard_subtitle_admin">Ringkasan seluruh data aplikasi</string>
+    <string name="label_langganan_aktif">Langganan Aktif</string>
+    <string name="format_dari_total">dari %1$s total</string>
+    <string name="format_hari_tagihan">Tagihan %1$d Hari ke Depan</string>
+    <string name="format_jumlah_pelanggan">%1$d pelanggan</string>
+    <string name="format_paket_harga">%1$s · %2$s</string>
+    <string name="format_peringkat">%1$d.</string>
+    <string name="label_hari_ini">Hari ini</string>
+    <string name="label_besok">Besok</string>
+    <string name="label_lihat_patungan">Lihat patungan</string>
+    <string name="cd_lihat_detail">Lihat detail</string>
+    <string name="empty_per_kategori">Belum ada langganan aktif untuk dihitung</string>
+    <string name="empty_tagihan_hari">Tidak ada tagihan dalam %1$d hari ke depan</string>
+    <string name="empty_layanan_populer">Belum ada layanan yang dilanggan</string>
 
     <!-- Tombol umum -->
     <string name="btn_simpan">Simpan</string>

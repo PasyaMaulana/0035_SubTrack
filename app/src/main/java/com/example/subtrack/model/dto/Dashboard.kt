@@ -6,12 +6,13 @@ import kotlinx.serialization.Serializable
 // data dari GET /dashboard. Isinya berbeda per role:
 // USER  -> subscriptions, spending, upcoming_bills, groups
 // ADMIN -> totals, popular_services
-// Karena itu semua bagian dibuat nullable.
+// Karena itu semua bagian dibuat nullable. role = role pemilik token (dikirim server untuk kedua role).
 @Serializable
 data class DashboardData(
+    val role: Role? = null,
     val subscriptions: SubscriptionStats? = null,
     val spending: SpendingStats? = null,
-    @SerialName("upcoming_bills") val upcomingBills: List<Subscription> = emptyList(),
+    @SerialName("upcoming_bills") val upcomingBills: List<UpcomingBill> = emptyList(),
     val groups: GroupStats? = null,
     val totals: AdminTotals? = null,
     @SerialName("popular_services") val popularServices: List<PopularService> = emptyList()
@@ -34,11 +35,21 @@ data class SpendingStats(
     @SerialName("by_category") val byCategory: List<CategorySpending> = emptyList()
 )
 
-// Satu baris pengeluaran per kategori
+// Satu baris pengeluaran per kategori (estimasi per bulan dari langganan aktif), urut terbesar dari server
 @Serializable
 data class CategorySpending(
     val category: Category,
-    val total: Long = 0
+    @SerialName("amount") val amount: Long = 0
+)
+
+// Satu tagihan dalam N hari ke depan. id = id langganan, dipakai untuk membuka detail langganan.
+@Serializable
+data class UpcomingBill(
+    val id: Int,
+    @SerialName("service_name") val serviceName: String,
+    @SerialName("plan_name") val planName: String,
+    val price: Long = 0,
+    @SerialName("next_billing_date") val nextBillingDate: String? = null
 )
 
 @Serializable
@@ -62,8 +73,8 @@ data class AdminTotals(
 // Layanan dengan pelanggan terbanyak
 @Serializable
 data class PopularService(
-    val id: Int,
+    @SerialName("service_id") val serviceId: Int,
     val name: String,
     val category: Category,
-    @SerialName("subscription_count") val subscriptionCount: Int = 0
+    @SerialName("subscriber_count") val subscriptionCount: Int = 0
 )

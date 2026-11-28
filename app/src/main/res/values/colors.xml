@@ -16,4 +16,12 @@
     <color name="status_dijeda_container">#FFFFE8B8</color>
     <color name="status_dibatalkan">#FF5F6368</color>
     <color name="status_dibatalkan_container">#FFE3E3E6</color>
+
+    <!-- Kategori layanan (warna bar pengeluaran per kategori di dashboard) -->
+    <color name="kategori_streaming_video">#FFD93F3F</color>
+    <color name="kategori_musik">#FF1E9E5A</color>
+    <color name="kategori_cloud_storage">#FF2F6FD6</color>
+    <color name="kategori_produktivitas">#FFE08A00</color>
+    <color name="kategori_gaming">#FF8A4FD3</color>
+    <color name="kategori_lainnya">#FF6B7280</color>
 </resources>

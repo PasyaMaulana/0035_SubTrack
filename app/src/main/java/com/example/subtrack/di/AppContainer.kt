@@ -13,9 +13,11 @@ import com.example.subtrack.model.network.ServiceApi
 import com.example.subtrack.model.network.SubscriptionApi
 import com.example.subtrack.model.network.TokenAuthenticator
 import com.example.subtrack.model.repository.AuthRepository
+import com.example.subtrack.model.repository.DashboardRepository
 import com.example.subtrack.model.repository.GroupRepository
 import com.example.subtrack.model.repository.MemberRepository
 import com.example.subtrack.model.repository.NetworkAuthRepository
+import com.example.subtrack.model.repository.NetworkDashboardRepository
 import com.example.subtrack.model.repository.NetworkGroupRepository
 import com.example.subtrack.model.repository.NetworkMemberRepository
 import com.example.subtrack.model.repository.NetworkPaymentRepository
@@ -52,6 +54,7 @@ interface AppContainer {
     val paymentRepository: PaymentRepository
     val groupRepository: GroupRepository
     val memberRepository: MemberRepository
+    val dashboardRepository: DashboardRepository
 
     // Penyimpanan foto bukti pembayaran di filesDir/bukti/
     val penyimpananFotoBukti: PenyimpananFotoBukti
@@ -128,6 +131,9 @@ class DefaultAppContainer(context: Context) : AppContainer {
     }
     override val memberRepository: MemberRepository by lazy {
         NetworkMemberRepository(memberApi, json)
+    }
+    override val dashboardRepository: DashboardRepository by lazy {
+        NetworkDashboardRepository(dashboardApi, json)
     }
 
     override val penyimpananFotoBukti = PenyimpananFotoBukti(context)

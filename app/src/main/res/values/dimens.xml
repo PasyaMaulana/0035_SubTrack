@@ -34,6 +34,8 @@
     <dimen name="progress_size">48dp</dimen>
     <dimen name="progress_stroke">2dp</dimen>
     <dimen name="progress_bar_height">8dp</dimen>
+    <!-- Bar horizontal pengeluaran per kategori di dashboard -->
+    <dimen name="chart_bar_height">12dp</dimen>
     <dimen name="avatar_size">72dp</dimen>
     <dimen name="proof_image_height">200dp</dimen>
     <dimen name="form_max_width">480dp</dimen>

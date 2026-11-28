@@ -78,7 +78,8 @@ fun SubTrackNavGraph(
             )
         }
         composable(DestinasiUtama.route) { entry ->
-            val role = (status as? StatusSesi.SudahLogin)?.role ?: Role.USER
+            val sesi = status as? StatusSesi.SudahLogin
+            val role = sesi?.role ?: Role.USER
             // Pesan hasil dari form (disimpan form di savedStateHandle entry ini sebelum ditutup)
             val pesanHasil by entry.savedStateHandle
                 .getStateFlow<Int?>(KUNCI_PESAN_HASIL, null)
@@ -89,6 +90,7 @@ fun SubTrackNavGraph(
                 .collectAsStateWithLifecycle()
             HalamanUtama(
                 role = role,
+                nama = sesi?.nama.orEmpty(),
                 onTambahLayanan = { navController.navigate(DestinasiFormLayanan.buatRute()) },
                 onUbahLayanan = { id -> navController.navigate(DestinasiFormLayanan.buatRute(id)) },
                 onTambahLangganan = { navController.navigate(DestinasiFormLangganan.buatRute()) },
@@ -98,7 +100,8 @@ fun SubTrackNavGraph(
                 pesanHasil = pesanHasil,
                 onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null },
                 perluMuatUlang = perluMuatUlang,
-                onMuatUlangDiterima = { entry.savedStateHandle[KUNCI_MUAT_ULANG] = false }
+                onMuatUlangDiterima = { entry.savedStateHandle[KUNCI_MUAT_ULANG] = false },
+                onTandaiMuatUlang = { entry.savedStateHandle[KUNCI_MUAT_ULANG] = true }
             )
         }
         composable(
