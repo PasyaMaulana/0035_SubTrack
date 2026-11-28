@@ -14,6 +14,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.DuesStatus
+import com.example.subtrack.model.dto.Role
 import com.example.subtrack.model.dto.SubscriptionStatus
 
 // Chip kecil (badge) untuk status. Warna teks dan latar dari colors.xml,
@@ -71,4 +72,14 @@ fun StatusLayananChip(aktif: Boolean, modifier: Modifier = Modifier) {
     } else {
         StatusChip(R.string.label_nonaktif, R.color.status_dibatalkan, R.color.status_dibatalkan_container, modifier)
     }
+}
+
+// Chip peran akun: Admin (ungu), User (biru)
+@Composable
+fun RoleChip(role: Role, modifier: Modifier = Modifier) {
+    val (teks, latar) = when (role) {
+        Role.ADMIN -> R.color.role_admin to R.color.role_admin_container
+        Role.USER -> R.color.role_user to R.color.role_user_container
+    }
+    StatusChip(labelRes = role.label, warnaTeksRes = teks, warnaLatarRes = latar, modifier = modifier)
 }

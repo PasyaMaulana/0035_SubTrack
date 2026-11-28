@@ -20,6 +20,9 @@ interface AuthRepository {
     suspend fun register(name: String, email: String, password: String): HasilApi<User>
 
     suspend fun logout(): HasilApi<Unit>
+
+    // Data akun yang sedang login dari GET /auth/me (nama, email, role, created_at)
+    suspend fun profil(): HasilApi<User>
 }
 
 class NetworkAuthRepository(
@@ -42,6 +45,9 @@ class NetworkAuthRepository(
         sessionManager.hapusSesi()
         return HasilApi.Sukses(Unit)
     }
+
+    override suspend fun profil(): HasilApi<User> =
+        panggilApi(json) { authApi.me() }
 
     // Login/register berhasil -> simpan token dan profil ke DataStore
     private suspend fun simpanJikaSukses(hasil: HasilApi<AuthData>): HasilApi<User> = when (hasil) {

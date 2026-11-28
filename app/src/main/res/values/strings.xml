@@ -155,6 +155,12 @@
     <string name="label_total_grup">Total Grup</string>
     <string name="label_layanan_populer">Layanan Populer</string>
     <string name="label_role">Peran</string>
+    <string name="label_informasi_akun">Informasi Akun</string>
+    <string name="label_bergabung_sejak">Bergabung Sejak</string>
+    <string name="label_tentang_aplikasi">Tentang Aplikasi</string>
+    <string name="label_nama_aplikasi">Nama Aplikasi</string>
+    <string name="label_versi">Versi</string>
+    <string name="msg_keluar">Sedang keluar…</string>
     <string name="dashboard_subtitle_user">Ringkasan langganan dan patunganmu</string>
     <string name="dashboard_subtitle_admin">Ringkasan seluruh data aplikasi</string>
     <string name="label_langganan_aktif">Langganan Aktif</string>
@@ -230,7 +236,6 @@
     <!-- Pesan loading, error, dan kosong -->
     <string name="msg_memuat">Memuat data…</string>
     <string name="msg_menyimpan">Menyimpan…</string>
-    <string name="msg_segera_hadir">Halaman %1$s sedang disiapkan</string>
     <string name="msg_berhasil_disimpan">Data berhasil disimpan</string>
     <string name="msg_berhasil_dihapus">Data berhasil dihapus</string>
     <string name="msg_tidak_ada_perubahan">Tidak ada perubahan</string>
@@ -309,5 +314,5 @@
 
     <!-- Enum: peran pengguna -->
     <string name="role_admin">Admin</string>
-    <string name="role_user">Pengguna</string>
+    <string name="role_user">User</string>
 </resources>

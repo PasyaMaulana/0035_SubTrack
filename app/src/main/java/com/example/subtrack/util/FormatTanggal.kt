@@ -1,6 +1,7 @@
 package com.example.subtrack.util
 
 import java.time.Instant
+import java.time.ZoneId
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -30,6 +31,17 @@ fun parseTanggalApi(tanggal: String?): LocalDate? {
 // "2026-12-05" -> "5 Des 2026". Teks yang tidak bisa dibaca dikembalikan apa adanya.
 fun tanggalTampilan(tanggalApi: String?): String =
     parseTanggalApi(tanggalApi)?.format(FORMAT_TAMPILAN) ?: tanggalApi.orEmpty()
+
+// Tanggal-waktu ISO UTC dari server (contoh created_at "2026-11-28T00:30:00.000Z") -> "28 Nov 2026"
+// menurut zona waktu perangkat, supaya tanggal tidak mundur sehari. Selain format itu, dibaca seperti tanggal biasa.
+fun tanggalWaktuTampilan(tanggalWaktuIso: String?): String {
+    if (tanggalWaktuIso.isNullOrBlank()) return ""
+    return try {
+        Instant.parse(tanggalWaktuIso).atZone(ZoneId.systemDefault()).toLocalDate().format(FORMAT_TAMPILAN)
+    } catch (e: DateTimeParseException) {
+        tanggalTampilan(tanggalWaktuIso)
+    }
+}
 
 // "5 Des 2026" -> "2026-12-05"; null jika formatnya salah
 fun tanggalKeApi(tanggalTampilan: String): String? = try {

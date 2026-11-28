@@ -24,4 +24,10 @@
     <color name="kategori_produktivitas">#FFE08A00</color>
     <color name="kategori_gaming">#FF8A4FD3</color>
     <color name="kategori_lainnya">#FF6B7280</color>
+
+    <!-- Chip peran akun di halaman profil -->
+    <color name="role_admin">#FF6A3FB5</color>
+    <color name="role_admin_container">#FFEADDFF</color>
+    <color name="role_user">#FF1F5FA8</color>
+    <color name="role_user_container">#FFD6E4FF</color>
 </resources>

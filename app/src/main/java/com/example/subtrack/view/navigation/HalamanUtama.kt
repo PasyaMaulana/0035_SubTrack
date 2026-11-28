@@ -1,36 +1,31 @@
 package com.example.subtrack.view.navigation
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
 import com.example.subtrack.view.dashboard.DashboardScreen
 import com.example.subtrack.view.grup.GrupScreen
 import com.example.subtrack.view.katalog.KatalogScreen
 import com.example.subtrack.view.langganan.LanggananScreen
+import com.example.subtrack.view.profil.ProfilScreen
 
 // Halaman utama setelah login: Scaffold + NavigationBar bawah, menu sesuai role.
 // Layar form (tambah/ubah) dibuka di NavGraph utama lewat callback onXxx supaya tampil tanpa NavigationBar.
@@ -134,28 +129,10 @@ fun HalamanUtama(
                             perluMuatUlang = perluMuatUlang,
                             onMuatUlangDiterima = onMuatUlangDiterima
                         )
-                        // Sementara: tab lain masih placeholder, diganti layar fitur di langkah berikutnya
-                        else -> PlaceholderTab(judul = stringResource(item.titleRes))
+                        MenuUtama.PROFIL -> ProfilScreen()
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun PlaceholderTab(judul: String, modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(dimensionResource(R.dimen.padding_large))
-    ) {
-        Text(
-            text = stringResource(R.string.msg_segera_hadir, judul),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
     }
 }

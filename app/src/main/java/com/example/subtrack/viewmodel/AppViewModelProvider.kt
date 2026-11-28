@@ -22,6 +22,7 @@ import com.example.subtrack.viewmodel.langganan.FormLanggananViewModel
 import com.example.subtrack.viewmodel.langganan.LanggananViewModel
 import com.example.subtrack.viewmodel.pembayaran.FormPembayaranViewModel
 import com.example.subtrack.viewmodel.pembayaran.RiwayatPembayaranViewModel
+import com.example.subtrack.viewmodel.profil.ProfilViewModel
 
 // Factory semua ViewModel. Dipakai di layar: viewModel(factory = AppViewModelProvider.Factory)
 object AppViewModelProvider {
@@ -32,6 +33,9 @@ object AppViewModelProvider {
 
         // Dashboard (user dan admin)
         initializer { DashboardViewModel(subTrackApplication().container.dashboardRepository) }
+
+        // Profil (user dan admin)
+        initializer { ProfilViewModel(subTrackApplication().container.authRepository) }
 
         // Katalog layanan (admin)
         initializer { KatalogViewModel(subTrackApplication().container.serviceRepository) }
