@@ -124,7 +124,6 @@
     <string name="format_jumlah_lunas">%1$d dari %2$d lunas</string>
     <string name="format_terkumpul_dari">%1$s dari %2$s</string>
     <string name="format_langganan_pilihan">%1$s · %2$s</string>
-    <string name="msg_anggota_segera">Daftar anggota grup ini akan tampil di sini</string>
 
     <!-- Label form: anggota -->
     <string name="label_nama_anggota">Nama Anggota</string>
@@ -132,6 +131,14 @@
     <string name="label_iuran">Iuran</string>
     <string name="hint_iuran">Kosongkan agar dibagi rata</string>
     <string name="label_status_iuran">Status Iuran</string>
+    <string name="hint_kontak">Opsional, contoh nomor WhatsApp atau email</string>
+    <string name="hint_tanggal_bayar_anggota">Kosongkan agar diisi tanggal hari ini</string>
+    <string name="btn_tandai_lunas">Tandai Lunas</string>
+    <string name="btn_batal_lunas">Batal Lunas</string>
+    <string name="format_dibayar_tanggal">Dibayar %1$s</string>
+    <string name="msg_ditandai_lunas">Anggota ditandai lunas</string>
+    <string name="msg_ditandai_belum_lunas">Anggota ditandai belum lunas</string>
+    <string name="msg_grup_penuh_tambah">Grup sudah penuh (%1$d / %2$d anggota). Naikkan batas anggota lewat Edit grup untuk menambah anggota.</string>
 
     <!-- Dashboard dan profil -->
     <string name="label_total_langganan">Total Langganan</string>
@@ -209,6 +216,8 @@
     <string name="error_nama_grup_rentang">Nama grup harus 3 sampai 50 karakter</string>
     <string name="error_maks_anggota_rentang">Jumlah anggota harus di antara 2 dan 20</string>
     <string name="error_grup_penuh">Grup sudah mencapai batas anggota</string>
+    <string name="error_nama_anggota_rentang">Nama anggota harus 2 sampai 50 karakter</string>
+    <string name="error_kontak_panjang">Kontak maksimal 100 karakter</string>
     <string name="error_nama_layanan_rentang">Nama layanan harus 2 sampai 50 karakter</string>
     <string name="error_pilih_kategori">Pilih kategori</string>
     <string name="error_deskripsi_panjang">Deskripsi maksimal 255 karakter</string>

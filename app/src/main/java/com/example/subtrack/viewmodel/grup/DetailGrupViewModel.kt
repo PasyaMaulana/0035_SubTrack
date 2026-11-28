@@ -61,9 +61,19 @@ class DetailGrupViewModel(
         }
     }
 
-    // Kembali dari form ubah: tampilkan pesan lalu muat ulang tanpa layar loading penuh
+    // Kembali dari form (ubah grup atau tambah/ubah anggota): tampilkan pesan lalu muat ulang
     fun terimaHasil(@StringRes pesanRes: Int) {
         pesan = PesanLayar(teksRes = pesanRes)
+        muatUlang()
+    }
+
+    // Muat ulang tanpa layar loading penuh, contoh setelah anggota berubah supaya summary
+    // (jumlah anggota, lunas, terkumpul, sisa) ikut berubah. Jika gagal, data lama tetap tampil.
+    fun muatUlang() {
+        if (uiState !is DetailGrupUiState.Success) {
+            muat()
+            return
+        }
         viewModelScope.launch {
             when (val hasil = groupRepository.detailGrup(idGrup)) {
                 is HasilApi.Sukses -> uiState = DetailGrupUiState.Success(hasil.data)

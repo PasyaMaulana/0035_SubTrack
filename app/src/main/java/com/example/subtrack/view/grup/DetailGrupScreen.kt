@@ -13,12 +13,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -30,11 +27,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Group
 import com.example.subtrack.util.teksRupiah
+import com.example.subtrack.view.anggota.BagianAnggota
 import com.example.subtrack.view.components.AksiTopAppBar
 import com.example.subtrack.view.components.BarisInfo
 import com.example.subtrack.view.components.ConfirmDialog
@@ -43,21 +40,29 @@ import com.example.subtrack.view.components.LoadingView
 import com.example.subtrack.view.components.SubTrackTopAppBar
 import com.example.subtrack.view.components.teks
 import com.example.subtrack.viewmodel.AppViewModelProvider
+import com.example.subtrack.viewmodel.anggota.DaftarAnggotaUiState
+import com.example.subtrack.viewmodel.anggota.DaftarAnggotaViewModel
 import com.example.subtrack.viewmodel.grup.DetailGrupUiState
 import com.example.subtrack.viewmodel.grup.DetailGrupViewModel
 
-// Detail satu grup patungan: informasi grup, ringkasan iuran, dan tempat daftar anggota.
-// onUbah menerima id grup; onSelesai menerima pesan (@StringRes) setelah hapus berhasil.
-// pesanHasil = pesan dari form ubah yang baru ditutup; detail dimuat ulang lalu pesan ditampilkan.
+// Detail satu grup patungan: ringkasan iuran, informasi grup, dan daftar anggota.
+// onUbah dan onTambahAnggota menerima id grup; onUbahAnggota menerima id grup dan id anggota.
+// onAnggotaBerubah dipanggil saat status iuran diubah atau anggota dihapus langsung di layar ini.
+// onSelesai menerima pesan (@StringRes) setelah hapus grup berhasil.
+// pesanHasil = pesan dari form (grup/anggota) yang baru ditutup; detail dan anggota dimuat ulang lalu pesan ditampilkan.
 @Composable
 fun DetailGrupScreen(
     onKembali: () -> Unit,
     onUbah: (Int) -> Unit,
+    onTambahAnggota: (Int) -> Unit,
+    onUbahAnggota: (Int, Int) -> Unit,
+    onAnggotaBerubah: () -> Unit,
     onSelesai: (Int) -> Unit,
     @StringRes pesanHasil: Int?,
     onPesanHasilDiterima: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailGrupViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: DetailGrupViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    anggotaViewModel: DaftarAnggotaViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val state = viewModel.uiState
@@ -67,11 +72,21 @@ fun DetailGrupScreen(
         viewModel.pesanSelesai?.let(onSelesai)
     }
 
-    // Kembali dari form ubah -> tampilkan pesan dan muat ulang detail
+    // Kembali dari form ubah grup atau form anggota -> tampilkan pesan, muat ulang detail dan anggota
     LaunchedEffect(pesanHasil) {
         if (pesanHasil != null) {
             viewModel.terimaHasil(pesanHasil)
+            anggotaViewModel.muatUlang()
             onPesanHasilDiterima()
+        }
+    }
+
+    // Anggota berubah di layar ini (status iuran / hapus) -> muat ulang summary supaya progres iuran ikut berubah
+    LaunchedEffect(anggotaViewModel.adaPerubahan) {
+        if (anggotaViewModel.adaPerubahan) {
+            viewModel.muatUlang()
+            onAnggotaBerubah()
+            anggotaViewModel.perubahanDiterima()
         }
     }
 
@@ -80,6 +95,15 @@ fun DetailGrupScreen(
         if (teksPesan != null) {
             snackbarHostState.showSnackbar(teksPesan)
             viewModel.hapusPesan()
+        }
+    }
+
+    // Pesan dari daftar anggota (ubah status atau hapus)
+    val teksPesanAnggota = anggotaViewModel.pesan?.teks()
+    LaunchedEffect(teksPesanAnggota) {
+        if (teksPesanAnggota != null) {
+            snackbarHostState.showSnackbar(teksPesanAnggota)
+            anggotaViewModel.hapusPesan()
         }
     }
 
@@ -126,7 +150,21 @@ fun DetailGrupScreen(
                 onCobaLagi = viewModel::muat,
                 modifier = modifierIsi
             )
-            is DetailGrupUiState.Success -> IsiDetailGrup(grup = state.grup, modifier = modifierIsi)
+            is DetailGrupUiState.Success -> IsiDetailGrup(
+                grup = state.grup,
+                bagianAnggota = {
+                    // Jumlah anggota dari daftar terbaru; selama daftar belum termuat pakai summary grup
+                    val daftar = anggotaViewModel.uiState as? DaftarAnggotaUiState.Success
+                    BagianAnggota(
+                        viewModel = anggotaViewModel,
+                        jumlahAnggota = daftar?.anggota?.size ?: state.grup.summary.memberCount,
+                        maksAnggota = state.grup.maxMembers,
+                        onTambah = { onTambahAnggota(state.grup.id) },
+                        onUbah = { idAnggota -> onUbahAnggota(state.grup.id, idAnggota) }
+                    )
+                },
+                modifier = modifierIsi
+            )
         }
     }
 
@@ -141,7 +179,11 @@ fun DetailGrupScreen(
 }
 
 @Composable
-private fun IsiDetailGrup(grup: Group, modifier: Modifier = Modifier) {
+private fun IsiDetailGrup(
+    grup: Group,
+    bagianAnggota: @Composable () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -155,7 +197,7 @@ private fun IsiDetailGrup(grup: Group, modifier: Modifier = Modifier) {
         ) {
             KartuRingkasanIuran(grup)
             KartuInformasiGrup(grup)
-            BagianAnggota()
+            bagianAnggota()
         }
     }
 }
@@ -217,39 +259,6 @@ private fun KartuInformasiGrup(grup: Group) {
                 grup.description?.takeIf { it.isNotBlank() } ?: kosong,
                 garisBawah = false
             )
-        }
-    }
-}
-
-// Tempat daftar anggota. Sementara berisi penanda; daftar anggota diisi di langkah 14.
-@Composable
-private fun BagianAnggota() {
-    Column(verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small))) {
-        Text(
-            text = stringResource(R.string.title_anggota),
-            style = MaterialTheme.typography.titleMedium
-        )
-        OutlinedCard(modifier = Modifier.fillMaxWidth()) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small)),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(dimensionResource(R.dimen.padding_large))
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Groups,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.outline,
-                    modifier = Modifier.size(dimensionResource(R.dimen.icon_large))
-                )
-                Text(
-                    text = stringResource(R.string.msg_anggota_segera),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center
-                )
-            }
         }
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.subtrack.R
 import com.example.subtrack.model.dto.Role
+import com.example.subtrack.viewmodel.anggota.FormAnggotaViewModel
 import com.example.subtrack.viewmodel.grup.DetailGrupViewModel
 import com.example.subtrack.viewmodel.grup.FormGrupViewModel
 import com.example.subtrack.viewmodel.katalog.FormLayananViewModel
@@ -103,6 +104,19 @@ object DestinasiFormGrup : DestinasiNavigasi {
 
     // Rute tujuan navigasi, contoh "form_grup" atau "form_grup?id=3"
     fun buatRute(id: Int? = null): String = if (id == null) BASE else "$BASE?$ARG_ID=$id"
+}
+
+// Form tambah/ubah anggota satu grup. idGrup wajib, idAnggota opsional (ada = ubah)
+object DestinasiFormAnggota : DestinasiNavigasi {
+    private const val BASE = "form_anggota"
+    const val ARG_ID_GRUP = FormAnggotaViewModel.ARG_ID_GRUP
+    const val ARG_ID_ANGGOTA = FormAnggotaViewModel.ARG_ID_ANGGOTA
+    override val route = "$BASE/{$ARG_ID_GRUP}?$ARG_ID_ANGGOTA={$ARG_ID_ANGGOTA}"
+    override val titleRes = R.string.title_tambah_anggota
+
+    // Contoh "form_anggota/3" (tambah) atau "form_anggota/3?idAnggota=7" (ubah)
+    fun buatRute(idGrup: Int, idAnggota: Int? = null): String =
+        if (idAnggota == null) "$BASE/$idGrup" else "$BASE/$idGrup?$ARG_ID_ANGGOTA=$idAnggota"
 }
 
 // Tab di NavigationBar halaman utama

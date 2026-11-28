@@ -6,6 +6,8 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.subtrack.SubTrackApplication
+import com.example.subtrack.viewmodel.anggota.DaftarAnggotaViewModel
+import com.example.subtrack.viewmodel.anggota.FormAnggotaViewModel
 import com.example.subtrack.viewmodel.auth.LoginViewModel
 import com.example.subtrack.viewmodel.auth.RegisterViewModel
 import com.example.subtrack.viewmodel.auth.SesiViewModel
@@ -85,6 +87,16 @@ object AppViewModelProvider {
                 container.serviceRepository,
                 container.subscriptionRepository
             )
+        }
+
+        // Anggota grup patungan (user)
+        initializer {
+            // SavedStateHandle berisi id grup dari rute detail grup
+            DaftarAnggotaViewModel(createSavedStateHandle(), subTrackApplication().container.memberRepository)
+        }
+        initializer {
+            // SavedStateHandle berisi id grup dan id anggota (mode ubah)
+            FormAnggotaViewModel(createSavedStateHandle(), subTrackApplication().container.memberRepository)
         }
     }
 }

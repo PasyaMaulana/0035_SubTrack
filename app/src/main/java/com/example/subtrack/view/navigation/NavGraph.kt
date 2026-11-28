@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.subtrack.model.dto.Role
+import com.example.subtrack.view.anggota.FormAnggotaScreen
 import com.example.subtrack.view.auth.LoginScreen
 import com.example.subtrack.view.auth.RegisterScreen
 import com.example.subtrack.view.components.LoadingView
@@ -176,9 +177,32 @@ fun SubTrackNavGraph(
             DetailGrupScreen(
                 onKembali = { navController.navigateUp() },
                 onUbah = { id -> navController.navigate(DestinasiFormGrup.buatRute(id)) },
+                onTambahAnggota = { idGrup -> navController.navigate(DestinasiFormAnggota.buatRute(idGrup)) },
+                onUbahAnggota = { idGrup, idAnggota ->
+                    navController.navigate(DestinasiFormAnggota.buatRute(idGrup, idAnggota))
+                },
+                // Status iuran diubah atau anggota dihapus langsung di detail -> daftar grup ikut dimuat ulang
+                onAnggotaBerubah = { navController.tandaiMuatUlangUtama() },
                 onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) },
                 pesanHasil = pesanHasil,
                 onPesanHasilDiterima = { entry.savedStateHandle[KUNCI_PESAN_HASIL] = null }
+            )
+        }
+        composable(
+            route = DestinasiFormAnggota.route,
+            // idAnggota opsional: default -1 berarti mode tambah
+            arguments = listOf(
+                navArgument(DestinasiFormAnggota.ARG_ID_GRUP) { type = NavType.IntType },
+                navArgument(DestinasiFormAnggota.ARG_ID_ANGGOTA) {
+                    type = NavType.IntType
+                    defaultValue = -1
+                }
+            )
+        ) {
+            // Dibuka dari detail grup; pesan hasil membuat detail memuat ulang anggota dan ringkasan iuran
+            FormAnggotaScreen(
+                onKembali = { navController.navigateUp() },
+                onSelesai = { pesanRes -> navController.kembaliDenganPesan(pesanRes) }
             )
         }
         composable(
@@ -211,15 +235,18 @@ private fun NavHostController.keHalamanUtama() {
 private fun NavHostController.kembaliDenganPesan(pesanRes: Int) {
     val sebelumnya = previousBackStackEntry
     sebelumnya?.savedStateHandle?.set(KUNCI_PESAN_HASIL, pesanRes)
-    if (sebelumnya?.destination?.route != DestinasiUtama.route) {
-        val entryUtama = try {
-            getBackStackEntry(DestinasiUtama.route)
-        } catch (e: IllegalArgumentException) {
-            null
-        }
-        entryUtama?.savedStateHandle?.set(KUNCI_MUAT_ULANG, true)
-    }
+    if (sebelumnya?.destination?.route != DestinasiUtama.route) tandaiMuatUlangUtama()
     popBackStack()
+}
+
+// Beri penanda agar daftar di halaman utama dimuat ulang saat dibuka kembali
+private fun NavHostController.tandaiMuatUlangUtama() {
+    val entryUtama = try {
+        getBackStackEntry(DestinasiUtama.route)
+    } catch (e: IllegalArgumentException) {
+        null
+    }
+    entryUtama?.savedStateHandle?.set(KUNCI_MUAT_ULANG, true)
 }
 
 // Kunci savedStateHandle untuk pesan hasil form dan penanda muat ulang daftar

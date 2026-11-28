@@ -19,10 +19,12 @@ sealed interface HasilApi<out T> {
     // pesanServer: message dari backend (boleh ditampilkan apa adanya)
     // pesanRes: pesan lokal dari strings.xml, dipakai jika server tidak memberi pesan
     // errorField: isi errors[] dari backend, contoh {field:"email", message:"Email sudah dipakai"}
+    // kodeHttp: status HTTP response gagal (contoh 409); null jika error jaringan/parsing
     data class Gagal(
         val pesanServer: String? = null,
         @param:StringRes val pesanRes: Int = R.string.error_umum,
-        val errorField: List<ErrorDetail> = emptyList()
+        val errorField: List<ErrorDetail> = emptyList(),
+        val kodeHttp: Int? = null
     ) : HasilApi<Nothing>
 }
 
@@ -78,7 +80,8 @@ private fun bacaErrorBody(json: Json, e: HttpException): HasilApi.Gagal {
             null // body bukan JSON (mis. halaman error HTML)
         }
     }
-    return response?.keGagal(pesanCadangan) ?: HasilApi.Gagal(pesanRes = pesanCadangan)
+    val gagal = response?.keGagal(pesanCadangan) ?: HasilApi.Gagal(pesanRes = pesanCadangan)
+    return gagal.copy(kodeHttp = e.code())
 }
 
 // Ambil message dan errors dari ApiResponse. Jika message kosong, pakai error field pertama.
